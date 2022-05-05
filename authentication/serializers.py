@@ -7,3 +7,12 @@ class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'firstName', 'lastName', 'phoneNumber', 'role','password')
+
+
+
+    def validate_date(self,data):
+        phone = data['phoneNumber'] 
+        true = RegexValidator(regex=r'^\+?1?\d{10,15}$')
+        if not true:
+            raise serializers.ValidationError({'status':"error", 'message':"Please enter your phonenumber in the format starting with: 09"})   
+        return data 

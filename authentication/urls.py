@@ -3,9 +3,9 @@ from . import views
 from .views import *
 
 urlpatterns = [
-    path('', views.ApiOverview, name='home'),
-    path('auth/create/', views.user_register, name='add-user'),
-    path('profile/', views.view_profile, name='view-profile'),
+    path('', APIOverview.as_view(), name='home'),
+    path('auth/create/', UserRegisterView.as_view(), name='add-user'),
+    # path('profile/', view_profile, name='view-profile'),
     path('auth/otp/', sendOtp, name='send-otp'),
     path('auth/verify/', verifyOtp, name='verify-otp'),
 
