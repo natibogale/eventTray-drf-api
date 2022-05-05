@@ -16,3 +16,20 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         if not true:
             raise serializers.ValidationError({'status':"error", 'message':"Please enter your phonenumber in the format starting with: 09"})   
         return data 
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'firstName', 'lastName', 'phoneNumber', 'role','password')
+
+
+
+
+class Loginserializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id','username','phoneNumber', 'role', 'token')
+        read_only_fields = ['token']
+
+
