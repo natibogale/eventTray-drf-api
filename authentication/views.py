@@ -22,7 +22,7 @@ from rest_framework.generics import *
 from django.conf import settings
 import requests
 from .jwt import *
-
+from .permissions import IsEventOrganizer
 
 class APIOverview(GenericAPIView):
     permission_classes = [permissions.AllowAny]
@@ -38,7 +38,6 @@ class APIOverview(GenericAPIView):
         }
 
         return Response(api_urls)
-
 
 
 @authentication_classes([])
@@ -186,6 +185,7 @@ def sendOtp(request):
             status=status.HTTP_400_BAD_REQUEST,
         )  # Just for demonstration
 
+
 @authentication_classes([])
 class VerifyOTP(GenericAPIView):
     permission_classes = [permissions.AllowAny]
@@ -206,9 +206,9 @@ class VerifyOTP(GenericAPIView):
         )  # Generating Key
         OTP = pyotp.HOTP(key)  # HOTP Model
         if OTP.verify(request.data["otp"], user.counter):  # Verifying the OTP
+            
             user.counter += 1
             user.save()
-
             us = authenticate(username=user.username, password=user.phoneNumber)
             if us:
                 serializer = Loginserializer(us)
@@ -226,13 +226,14 @@ class VerifyOTP(GenericAPIView):
             status=status.HTTP_401_UNAUTHORIZED,
         )
 
+
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 class UserProfileView(GenericAPIView):
-    
     def get(self, request):
 
         user = request.user
-        print("ssssssssssssssssssssssssssss", user)
         serializer = UserProfileSerializer(user)
-        return Response({"user": serializer.data})
+        return Response(
+            {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
+        )

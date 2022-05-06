@@ -1,4 +1,4 @@
-from rest_framework.authentication import get_authorization_header, BaseAuthentication
+from rest_framework.authentication import get_authorization_header, BaseAuthentication 
 
 from rest_framework.permissions import BasePermission
 
@@ -16,7 +16,9 @@ class JWTAuthentication(BaseAuthentication):
         auth_data = auth_header.decode("utf-8")
         auth_token = auth_data.split(" ")
         if len(auth_token) != 2:
-            raise exceptions.AuthenticationFailed("Token not valid")
+            raise exceptions.AuthenticationFailed(
+                {"status": "error", "message": "Token not valid"}
+            )
 
         token = auth_token[1]
 
@@ -27,12 +29,18 @@ class JWTAuthentication(BaseAuthentication):
             user = User.objects.get(username=username)
             return (user, None)
 
-        except jwt.ExpiredSignatureError as ex: 
-            raise exceptions.AuthenticationFailed("Token is expired, login again")
+        except jwt.ExpiredSignatureError as ex:
+            raise exceptions.AuthenticationFailed(
+                {"status": "error", "message": "Token is expired, login again",}
+            )
 
         except jwt.DecodeError as de:
-            raise exceptions.AuthenticationFailed("Token is invalid")
+            raise exceptions.AuthenticationFailed(
+                {"status": "error", "message": "Token is invalid"}
+            )
         except User.DoesNotExist as no_user:
-            raise exceptions.AuthenticationFailed("User Doesnot Exist!")
+            raise exceptions.AuthenticationFailed(
+                {"status": "error", "message": "User Doesnot Exist!"}
+            )
 
         return super().authenticate(request)
