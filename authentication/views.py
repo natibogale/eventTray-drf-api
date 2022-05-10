@@ -3,6 +3,9 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import User
 from .serializers import *
+from icecream import ic
+from django.contrib.auth import *
+
 
 # from rest_framework.serializers import *
 # from rest_framework import serializers
@@ -23,6 +26,67 @@ from django.conf import settings
 import requests
 from .jwt import *
 from .permissions import IsEventOrganizer
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required, user_passes_test
+
+from .forms import *
+######################################################################################
+# No api Views for Event Organizer
+
+
+# @login_required
+
+
+def home(request):
+    # user = request.user
+    # if user.is_authenticated:
+    # #     return redirect('record-officer-home')
+    # if request.method == 'GET':
+    #     user = User.objects.get(phoneNumber=request.GET['u'])
+    #     if user.is_authenticated:
+    #         ic('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',user)
+
+    if request.method == "POST":
+        form = loginForm(request.POST)
+        print(form,'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+        if form.is_valid():
+            phoneNumber = request.POST["phoneNumber"]
+            try:
+                user = User.objects.get(phoneNumber=phoneNumber)
+            except:
+                messages.error(request,  f"User doesn't exist!")
+                form = loginForm(request.POST)
+                context = {"form": form}
+                return render(request, "authentication/index.html", context)
+            if user and user.is_admin == False:
+                user = authenticate(username=user.username, password=phoneNumber)
+                login(request, user)
+                valuenext = request.POST.get("next")
+                messages.success(request, f"You have been succesfully logged in!")
+                return redirect("home")
+        else:
+            form = loginForm(request.POST)
+            context = {"form": form}
+            return render(request, "authentication/index.html", context)
+
+            # messages.warning(
+            #     request, f"The Login Credentials you entered are not correct!"
+            # )
+    form = loginForm()
+    context = {"form": form}
+    # messages.info(request, f'Welcome! You have to login to access further pages!')
+
+    return render(request, "authentication/index.html", context)
+
+
+def logoutView(request):
+    logout(request)
+    return redirect("home")
+
+
+###############################################################################3
+# API Views for All User Registration and Authentication
+
 
 class APIOverview(GenericAPIView):
     permission_classes = [permissions.AllowAny]
@@ -45,6 +109,11 @@ class UserRegisterView(GenericAPIView):
     permission_classes = [permissions.AllowAny]
 
     def post(self, request):
+        # print(
+        #     "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+        #     request.data[1],
+        #     len(request.data),
+        # )
         hashed = make_password(request.data["password"])
         request.data["password"] = hashed
 
@@ -85,7 +154,8 @@ class UserRegisterView(GenericAPIView):
             return Response(
                 {"status": "false", "message": serializer_class.errors},
                 status=status.HTTP_406_NOT_ACCEPTABLE,
-            )
+            ) 
+
 
 
 @api_view(["GET"])
@@ -206,10 +276,12 @@ class VerifyOTP(GenericAPIView):
         )  # Generating Key
         OTP = pyotp.HOTP(key)  # HOTP Model
         if OTP.verify(request.data["otp"], user.counter):  # Verifying the OTP
-            
+
             user.counter += 1
-            user.save()
+
             us = authenticate(username=user.username, password=user.phoneNumber)
+            user.is_authenticated = True
+            user.save()
             if us:
                 serializer = Loginserializer(us)
                 return Response(

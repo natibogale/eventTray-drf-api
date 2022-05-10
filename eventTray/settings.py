@@ -38,7 +38,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['192.168.0.9','127.0.0.1','*']
 
 AUTH_USER_MODEL = "authentication.User"
 
@@ -61,9 +61,21 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+
+
+
     "rest_framework",
     "authentication",
     "events",
+    "ckeditor",
+    "crispy_forms",
+    "dj_static",
+    "ckeditor_uploader",
+    'multiselectfield',
+    'location_field.apps.DefaultConfig',
+    "bootstrap4",
+
 ]
 
 MIDDLEWARE = [
@@ -157,10 +169,16 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 
+STATIC_ROOT = 'staticfiles'
+
+
 STATIC_URL = "static/"
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
@@ -168,7 +186,126 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 MEDIA_URL = "/media/"
 
 
+# LOGIN_URL ='https://www.google.com'
+
+
+ADMIN_SITE_HEADER = "EventTray Admin"
+
+
+
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+
+
+
+CKEDITOR_JQUERY_URL = 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'
+
+CKEDITOR_UPLOAD_PATH = 'event_descriptions/'
+
+CKEDITOR_IMAGE_BACKEND = 'pillow'
+
+
+
+
+
+CKEDITOR_CONFIGS = {
+'portal_config': {
+    # 'skin': 'moono',
+    # 'skin': 'office2013',
+    'toolbar_Basic': [
+        ['Source', '-', 'Bold', 'Italic']
+    ],
+    'toolbar_YourCustomToolbarConfig': [
+        {'name': 'document', 'items': [
+            'Source', '-', 'Save', 'NewPage', 'Preview', 'Print', '-', 'Templates'
+        ]},
+        {'name': 'clipboard', 'items': [
+            'Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'
+        ]},
+        {'name': 'editing', 'items': ['Find', 'Replace', '-', 'SelectAll']},
+        {'name': 'forms',
+         'items': [
+             'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea',
+             'Select', 'Button', 'ImageButton', 'HiddenField'
+         ]},
+        '/',
+        {'name': 'basicstyles',
+         'items': [
+             'Bold', 'Italic', 'Underline', 'Strike', 'Subscript',
+             'Superscript', '-', 'RemoveFormat'
+         ]},
+        {'name': 'paragraph',
+         'items': [
+             'NumberedList', 'BulletedList', '-', 'Outdent', 'Indent',
+             '-', 'Blockquote', 'CreateDiv', '-', 'JustifyLeft',
+             'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-',
+             'BidiLtr', 'BidiRtl', 'Language'
+         ]},
+        {'name': 'links', 'items': ['Link', 'Unlink', 'Anchor']},
+        {'name': 'insert',
+         'items': [
+             'Image', 'Table', 'HorizontalRule',
+             'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'
+         ]},
+        '/',
+        {'name': 'styles', 'items': ['Styles', 'Format', 'Font', 'FontSize']},
+        {'name': 'colors', 'items': ['TextColor', 'BGColor']},
+        {'name': 'tools', 'items': ['Maximize', 'ShowBlocks']},
+        {'name': 'about', 'items': ['About']},
+        '/',  # put this to force next toolbar on new line
+        {'name': 'yourcustomtools', 'items': [
+            # put the name of your editor.ui.addButton here
+            'Preview',
+            'Maximize',
+
+        ]},
+    ],
+    'toolbar': 'YourCustomToolbarConfig',  # put selected toolbar config here
+    # 'toolbarGroups': [{ 'name': 'document', 'groups': [ 'mode', 'document', 'doctools' ] }],
+    # 'height': 291,
+    # 'width': '100%',
+    # 'filebrowserWindowHeight': 725,
+    # 'filebrowserWindowWidth': 940,
+    # 'toolbarCanCollapse': True,
+    # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
+    'tabSpaces': 4,
+    'extraPlugins': ','.join([
+        'uploadimage',  # the upload image feature
+        # your extra plugins here
+        'div',
+        'autolink',
+        'autoembed',
+        'embedsemantic',
+        'autogrow',
+        # 'devtools',
+        'widget',
+        'lineutils',
+        'clipboard',
+        'dialog',
+        'dialogui',
+        'elementspath'
+    ]),
+    }
+}
+
+
+
+# LOCATION_FIELD = {
+# 'map.provider': 'openstreetmap',
+# 'search.provider': 'nominatim',
+# }
+
+
+LOCATION_FIELD = {
+'provider.google.api': '//maps.google.com/maps/api/js',
+# 'provider.google.api_key': 'AIzaSyAyRlfLmlDM-CENBUNuMc_QA5-AWXA_6Vs',
+'provider.google.api_libraries': '',
+'provider.google.map.type': 'ROADMAP',
+}
+
+
