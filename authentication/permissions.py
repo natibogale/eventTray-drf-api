@@ -3,7 +3,7 @@ from rest_framework import permissions
 
 class IsEventOrganizer(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.role == "Event Organizer":
+        if request.user.role == "Organizer":
             return True
         return False
 

@@ -13,8 +13,8 @@ import jwt
 
 roles = (
     ("User", "User"),
-    ("Event Organizer", "Event Organizer"),
-    ("Ticket Checker", "Ticket Checker"),
+    ("Organizer", "Organizer"),
+    ("Checker", "Checker"),
 )
 
 
@@ -104,7 +104,7 @@ class User(AbstractBaseUser):
         max_length=100,
         verbose_name="Gender",
         blank=True,
-        default="None",
+        default="Male",
     )
     phoneValidator = RegexValidator(
         regex=r"^\+?1?\d{10}$",
@@ -114,7 +114,6 @@ class User(AbstractBaseUser):
         validators=[phoneValidator],
         max_length=10,
         verbose_name="Phone Number",
-        unique=True,
     )
     profilePicture = models.ImageField(
         upload_to="Profile_Pictures/",
@@ -213,21 +212,20 @@ class Organizer(models.Model):
     organizer = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name="Organizer")
     email = models.EmailField(max_length=150, unique=True)
 
-    phoneValidator = RegexValidator(
-        regex=r"^\+?1?\d{10}$",
-        message="Please enter your phonenumber in the format starting with: 09",
-    )
-    organizerPhone = models.CharField(
-        validators=[phoneValidator],
-        max_length=10,
-        verbose_name="Organizer Phone",
-        blank=True, null=True
-    )
+    # phoneValidator = RegexValidator(
+    #     regex=r"^\+?1?\d{10}$",
+    #     message="Please enter your phonenumber in the format starting with: 09",
+    # )
+    # organizerPhone = models.CharField(
+    #     validators=[phoneValidator],
+    #     max_length=10,
+    #     verbose_name="Organizer Phone",
+    #     blank=True, null=True
+    # )
     twitter  = models.CharField(verbose_name="Twitter Link", blank=True,null=True, max_length = 150)
     telegram  = models.CharField(verbose_name="Telegram Link", blank=True,null=True, max_length = 150)
     instagram  = models.CharField(verbose_name="Instagram Link", blank=True,null=True, max_length = 150)
-    commercialLicense  = models.FileField(upload_to="Commercial_License", verbose_name="Commercial License" , blank=True, null=True)
-    idCard  = models.FileField(upload_to="Id_Card", verbose_name="Id Card" , blank=True, null=True)
+    verifyingDocument  = models.FileField(upload_to="Verifying_Document", verbose_name="Verifying Document" , blank=True, null=True)
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name="date joined")
     verifiedOrganizer = models.BooleanField(default=False)
 

@@ -2,18 +2,20 @@
 
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <title>EventTray | Create Events - Sell Tickets</title>
 
-    <meta content="width=device-width, initial-scale=1.0, shrink-to-fit=no" name="viewport" />
+    <meta
+      content="width=device-width, initial-scale=1.0, shrink-to-fit=no"
+      name="viewport"
+    />
 
     <link rel="icon" href="{% static 'logo.png' %}" type="image/x-icon" />
-
+    <link rel="stylesheet" href="{% static 'assets/css/azzara.min.css' %}">
 
     <!-- <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -22,7 +24,6 @@
       crossorigin="anonymous"
     /> -->
 
-
     <!-- <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
@@ -30,10 +31,21 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     /> -->
+    <script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+    <script>
+      WebFont.load({
+        google: {"families":["Open+Sans:300,400,600,700"]},
+        custom: {"families":["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ["{% static 'assets/css/fonts.css' %}"]},
+        active: function() {
+          sessionStorage.fonts = true;
+        }
+      });
+    </script>
+  
+    <!-- CSS Files -->
+      <link rel="stylesheet" href="{% static 'assets/css/azzara.min.css' %}">
 
-
-
-
+    
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.min.css"
@@ -42,42 +54,125 @@
       referrerpolicy="no-referrer"
     />
 
-    
-
     {% block head %} {% endblock head%}
-</head>
+  </head>
 
-<body>
-  
-
+  <body>
     {% block body %} {% endblock body %}
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-        integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-    crossorigin="anonymous"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+      crossorigin="anonymous"
+    ></script>
 
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.all.min.js"
-        integrity="sha512-IZ95TbsPTDl3eT5GwqTJH/14xZ2feLEGJRbII6bRKtE/HC6x3N4cHye7yyikadgAsuiddCY2+6gMntpVHL1gHw=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- 
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/11.1.9/sweetalert2.all.min.js"
+      integrity="sha512-IZ95TbsPTDl3eT5GwqTJH/14xZ2feLEGJRbII6bRKtE/HC6x3N4cHye7yyikadgAsuiddCY2+6gMntpVHL1gHw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
 
-        <style>
-    .swal2-success-circular-line-left{
+    <style>
+      .swal2-success-circular-line-left {
         background-color: rgb(255, 255, 255);
-    }
-        </style>
+      }
+    </style>
 
 
-        <script>
+<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
 
+<!-- jQuery UI -->
+<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+<!-- jQuery Scrollbar -->
+<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+<!-- Moment JS -->
+<script src="{% static 'assets/js/plugin/moment/moment.min.js' %}"></script>
+
+<!-- Chart JS -->
+<script src="{% static 'assets/js/plugin/chart.js/chart.min.js' %}"></script>
+
+<!-- jQuery Sparkline -->
+<script src="{% static 'assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+
+<!-- Chart Circle -->
+<script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+
+<!-- Datatables -->
+<script src="{% static 'assets/js/plugin/datatables/datatables.min.js' %}"></script>
+
+<!-- Bootstrap Notify -->
+<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+
+<!-- Bootstrap Toggle -->
+<script src="{% static 'assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+
+<!-- jQuery Vector Maps -->
+<script src="{% static 'assets/js/plugin/jqvmap/jquery.vmap.min.js' %}"></script>
+<script src="{% static 'assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+
+<!-- Google Maps Plugin -->
+<script src="{% static 'assets/js/plugin/gmaps/gmaps.js' %}"></script>
+
+<!-- Sweet Alert -->
+<script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+
+<!-- Azzara JS -->
+<script src="{% static 'assets/js/ready.min.js' %}"></script>
+
+<!-- Azzara DEMO methods, don't include it in your project! -->
+<script src="{% static 'assets/js/setting-demo.js' %}"></script>
+
+
+
+
+
+
+
+
+    {% if messages %} {% for message in messages %}
+
+
+    <script>
+      var placementFrom = "top";
+      var placementAlign = "right";
+      var state = "{{ message.extra_tags }}";
+      var style = "withicon";
+      var content = {};
+
+      content.message = "{{message}}";
+      content.title = "EventTray";
+
+      if (style == "withicon") {
+        content.icon = "fa fa-bell";
+      } else {
+        content.icon = "none";
+      }
+      // content.url = 'index.html';
+      content.target = "_blank";
+
+      $.notify(content, {
+        type: state,
+        placement: {
+          from: placementFrom,
+          align: placementAlign,
+        },
+        time: 1000,
+      });
       
-            
-        </script>
-</body>
+    </script>
 
+    {% endfor %} {% endif %}
+  </body>
 </html>

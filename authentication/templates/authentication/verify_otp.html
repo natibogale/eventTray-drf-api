@@ -1,0 +1,81 @@
+
+
+{% extends 'base/head.html' %}
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <script>
+        function setCursorInputPosition(e, pos) {
+          e.setSelectionRange(pos, pos);
+        }
+        </script>
+
+    {% endblock head %}
+{% block body %}
+
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="#" method="POST" class="sign-in-form">
+
+            {% csrf_token %}
+
+            <img src="{% static 'logo.png' %}" alt="">
+            <h2 class="title">EventTray Organizer</h2>
+
+            <h2 class="">Verify OTP sent to your Phone</h2>
+            <h3>It expires in 10 minutes!</h3>
+            <!-- <div class="input-field"> -->
+                <style>
+
+.middle {
+    text-align:center;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(37, 37, 37);
+}
+                </style>
+              {{  form }}
+
+              <!-- <input type="text" placeholder="Phone Number 09- Format" /> -->
+            <!-- </div> -->
+         
+            <input type="submit" value="Get Code" name="login" class="btn solid" />
+
+          
+
+          </form>
+
+        </div>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>Haven't requested and OTP yet?</h3>
+            <p>
+                Then request now on the login page!
+            </p>
+            <button class="btn transparent" >
+              <a href="{% url 'home' %}" style="text-decoration: none; color: white;">Get Code</a>
+            </button>
+          </div>
+          <img src="{% static 'img/log.svg' %}" class="image" alt="" />
+        </div>
+    
+      </div>
+    </div>
+
+
+    <script src="{% static 'app.js' %}"></script>
+
+    {% endblock body  %}
+

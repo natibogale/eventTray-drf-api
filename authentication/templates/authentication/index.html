@@ -1,7 +1,9 @@
+
+
 {% extends 'base/head.html' %}
 {% load static %}
 {% load bootstrap4 %}
-
+{% load crispy_forms_tags %}
 
 {% block head %}
 
@@ -9,83 +11,119 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-
-    <link rel="canonical" href="https://getbootstrap.com/docs/4.0/examples/floating-labels/">
-
-    <!-- Bootstrap core CSS -->
-    <link href="{%static 'Floating labels example for Bootstrap_files/bootstrap.min.css' %}" rel="stylesheet">
-
-    <!-- Custom styles for this template -->
-    <link href="{%static 'Floating labels example for Bootstrap_files/floating-labels.css' %}" rel="stylesheet">
-
-
-<link rel="stylesheet" href="{% static 'otp.css'  %}">
-
+    <link rel="stylesheet" href="{% static 'style.css' %}" />
 
     {% endblock head %}
+{% block body %}
+{% if mode %}
+    <div class="container {{ mode }}">
+    {% else %}
+    <div class="container">
 
+    {% endif %}
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="#" method="POST" class="sign-in-form">
 
+            {% csrf_token %}
 
+            <img src="{% static 'logo.png' %}" alt="">
+            <h2 class="title">EventTray Organizer</h2>
 
-   {% block body %}
+            <h2 class="">SIGN IN</h2>
+            <!-- <div class="input-field"> -->
+              {{  form }}
+              <!-- <input type="text" placeholder="Phone Number 09- Format" /> -->
+            <!-- </div> -->
+         
+            <input type="submit" value="Get Code" name="login" class="btn solid" />
 
+            <!-- <p class="social-text">Or Sign in with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div> -->
 
-<style> 
-body{
-  background-image: url("{% static 'back.jpg' %}");
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat, repeat;
-  background-size: cover;
+          </form>
 
-  
-}
-</style>
-  
-    <form class="form-signin" method="POST" >
-      <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+          <form action="#" method="POST" class="sign-up-form">
+            <h2 class="">SIGN UP AS AN ORGANIZER</h2>
 
-      {% csrf_token %}
-<!-- 
-      <div class="text-center mb-4">
-        <img class="mb-4" src="{% static 'era.png' %}" alt="" width="72" height="72">
-        <h1 class="h3 mb-3 font-weight-normal">EventTray</h1>
-      </div> -->
-
-        {% if messages %}
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
+            {% csrf_token %}
+            {{ form2 }}
+            <!-- <h2 class="title">Sign up</h2> -->
+            <!-- <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" />
+            </div> -->
+            <input type="submit" class="btn" name="signup" value="Sign up" />
+<!--             
+            <p class="social-text">Or Sign up with social platforms</p>
+            <div class="social-media">
+              <a href="#" class="social-icon">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-twitter"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-google"></i>
+              </a>
+              <a href="#" class="social-icon">
+                <i class="fab fa-linkedin-in"></i>
+              </a>
+            </div> -->
+          </form>
         </div>
+      </div>
 
-        {% endfor %}
-        {% endif %}
-
-      <!-- <div class="form-label-group">
-        <input type="text" id="inputEmail" class="form-control"  name="username" placeholder="Email address" required="" autofocus="" autocomplete="off" >
-        <label for="inputEmail">Phone Number 09- format</label>
-      </div> -->
-
-      <div class="d-flex justify-content-center align-items-center container">
-        <div class="card py-5 px-3">
-            <h5 class="m-0">Enter Phone Number to Login</h5></span>
-            <!-- <div class="d-flex flex-row mt-3"><input type="text" class="form-control"></div> -->
-            {% bootstrap_form form %}
-
-            <button class="btn btn-lg mt-3 mb-0 btn-primary btn-block" type="submit">Send Code</button>
-            <p class="mt-2 text-muted text-center">© <script> document.write(new Date().toDateString()); </script></p>
-
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>New to Event Organizer Portal?</h3>
+            <p>
+              Create an account and become and organizer. Sell Tickets and Collect Payments Easily!
+            </p>
+            <button class="btn transparent" id="sign-up-btn">
+              Sign up
+            </button>
+          </div>
+          <img src="{% static 'img/log.svg' %}" class="image" alt="" />
         </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>One of us ?</h3>
+            <p>
+              Then Log back in and Manage your events!
+            </p>
+            <button class="btn transparent" id="sign-in-btn">
+              Sign in
+            </button>
+          </div>
+          <img src="{% static 'img/register.svg' %}" class="image" alt="" />
+        </div>
+      </div>
     </div>
 
-   
+    <script src="{% static 'app.js' %}"></script>
 
+    {% endblock body  %}
 
-    </form>
-
-
-<img style="width: 0px; height: 0px; display: none !important; visibility: hidden;" src="https://brounelink.com/metric/?mid=&amp;wid=51824&amp;sid=&amp;tid=8549&amp;rid=LOADED&amp;custom1=getbootstrap.com&amp;custom2=%2Fdocs%2F4.0%2Fexamples%2Ffloating-labels%2F&amp;t=1581271037719" hidden=""><img style="width: 0px; height: 0px; display: none !important; visibility: hidden;" src="./Floating labels example for Bootstrap_files/saved_resource" hidden="">
-
-
-
-
-{% endblock body %}
