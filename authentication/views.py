@@ -8,6 +8,7 @@ from django.contrib.auth import *
 from collections import namedtuple
 
 import json
+
 # from rest_framework.serializers import *
 # from rest_framework import serializers
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -31,33 +32,44 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from .forms import *
-from django.shortcuts import (HttpResponseRedirect, get_object_or_404,get_list_or_404,
-                              redirect, render)
+from django.shortcuts import (
+    HttpResponseRedirect,
+    get_object_or_404,
+    get_list_or_404,
+    redirect,
+    render,
+)
+
+from datetime import timedelta, datetime
+
 ######################################################################################
 # No api Views for Event Organizer
 
 from json import JSONEncoder
 
-def customDecoder(date_time_obj):
-    return ('timestamp', date_time_obj.keys())(*date_time_obj.values())
 
 
 
-from datetime import timedelta, datetime
+
+
+# def customDecoder(date_time_obj):
+#     return ("timestamp", date_time_obj.keys())(*date_time_obj.values())
+
+
 
 MAX_LIVE_TIME = timedelta(seconds=20)
 
 
 def logoutView(request):
     logout(request)
-    return redirect('home')
+    return redirect("home")
 
 
 # @login_required
 
+
 def verifyOtp(request):
-    form = otpForm()
-    context = {"form": form}
+
 
     if request.method == "POST":
         form = otpForm(request.POST)
@@ -65,11 +77,9 @@ def verifyOtp(request):
             phoneNumber = request.session.get("phoneNumber")
             date_time_obj = request.session.get("timestamp")
 
-
             # timestamp = json.loads(date_time_obj, object_hook=customDecoder)
 
-
-            print('ttttttttttttttttttttttttttttttttttttttt', date_time_obj[15:16])
+            print("ttttttttttttttttttttttttttttttttttttttt", date_time_obj[15:16])
 
             # timestamp  = datetime.strptime(date_time_obj, '%Y-%m-%d %H:%M:%S.%f')
 
@@ -80,7 +90,7 @@ def verifyOtp(request):
             try:
                 user = User.objects.get(phoneNumber=phoneNumber, role="Organizer")
             except:
-                messages.error(request,  f"User doesn't exist!", extra_tags="danger")
+                messages.error(request, f"User doesn't exist!", extra_tags="danger")
                 form = otpForm(request.POST)
                 context = {"form": form}
                 return render(request, "authentication/verify_otp.html", context)
@@ -99,47 +109,53 @@ def verifyOtp(request):
                     user.save()
                 else:
                     messages.error(request, f"Incorrect OTP!", extra_tags="error")
-                    return redirect("verify-otp")                    
+                    return redirect("verify-otp")
 
                 login(request, user)
                 valuenext = request.POST.get("next")
-                messages.success(request, f"You have been succesfully logged in!", extra_tags="success")
+                messages.success(
+                    request,
+                    f"You have been succesfully logged in!",
+                    extra_tags="success",
+                )
                 return redirect("organizer-home")
         else:
             form = otpForm(request.POST)
             context = {"form": form}
-            return render(request, "authentication/verify_otp.html",context)
-
+            return render(request, "authentication/verify_otp.html", context)
+    
+    form = otpForm()
+    context = {"form": form}
     return render(request, "authentication/verify_otp.html", context)
-
 
 
 def home(request):
     mode = "sign-up-mode"
     form2 = registrationForm()
     form = loginForm()
-    context = {"form": form,'mode' : mode, 'form2':form2}
+    context = {"form": form, "mode": mode, "form2": form2}
 
-    if request.method == "POST" and request.POST.get("login",None):
+    if request.method == "POST" and request.POST.get("login", None):
         form = loginForm(request.POST)
         if form.is_valid():
             phoneNumber = request.POST["phoneNumber"]
             try:
                 user = User.objects.get(phoneNumber=phoneNumber, role="Organizer")
 
-
                 # user = authenticate(username=user.username, password=phoneNumber)
                 #  request, user)
                 # valuenext = request.POST.get("next")
-                user.counter +=1
+                user.counter += 1
                 user.save()
                 keygen = generateKey()
-                key = base64.b32encode(keygen.returnValue(phoneNumber).encode())  # Key is generated
+                key = base64.b32encode(
+                    keygen.returnValue(phoneNumber).encode()
+                )  # Key is generated
                 OTP = pyotp.HOTP(key)  # HOTP Model for OTP is created
 
                 # Change phoneNumber format from 09 to +251
-                
-                request.session['phoneNumber'] = phoneNumber
+
+                request.session["phoneNumber"] = phoneNumber
 
                 phoneNumber = list(phoneNumber)
                 phoneNumber[0] = "+251"
@@ -149,7 +165,9 @@ def home(request):
                 role = "Organizer"
 
                 messageOTP = (
-                    "Dear "+ role +", Your OTP is "
+                    "Dear "
+                    + role
+                    + ", Your OTP is "
                     + OTP.at(user.counter)
                     + ". It will exprire in 10 minutes. EventTray"
                 )
@@ -168,32 +186,36 @@ def home(request):
                 # if r.status_code == 200:
                 if 1:
 
-                    messages.success(request, f"An OTP has been sent to your phone"+url, extra_tags="success")
+                    messages.success(
+                        request,
+                        f"An OTP has been sent to your phone" + url,
+                        extra_tags="success",
+                    )
                     global _tree_instance
-                    request.session['timestamp'] = json.dumps(datetime.now(), indent=4, sort_keys=True, default=str)
+                    request.session["timestamp"] = json.dumps(
+                        datetime.now(), indent=4, sort_keys=True, default=str
+                    )
                     return redirect("verify-otp")
 
                 else:
-                    messages.error(request, f"Error Occured! Try again in a few", extra_tags="error")
+                    messages.error(
+                        request,
+                        f"Error Occured! Try again in a few",
+                        extra_tags="error",
+                    )
                     return redirect("verify-otp")
 
-
-
             except User.DoesNotExist as no_user:
-                messages.error(request,  f"User doesn't exist!", extra_tags="danger")
+                messages.error(request, f"User doesn't exist!", extra_tags="danger")
                 form = loginForm(request.POST)
-                context = {"form": form,'form2':form2}
+                context = {"form": form, "form2": form2}
                 return render(request, "authentication/index.html", context)
         else:
             form = loginForm(request.POST)
-            context = {"form": form,'form2':form2}
+            context = {"form": form, "form2": form2}
             return render(request, "authentication/index.html", context)
 
-
-
-
-
-    if request.method == "POST" and request.POST.get('signup',None):
+    if request.method == "POST" and request.POST.get("signup", None):
         form2 = registrationForm(request.POST)
 
         if form2.is_valid():
@@ -218,25 +240,23 @@ def home(request):
                 user.password = hashed
                 user.save()
 
-                # form2 = registrationForm()
+                context = {"form": form, "form2": form2}
 
-                context = {"form": form,"form2": form2}
-
-                messages.success(request,  f"You have successfully registered! Log in to continue.", extra_tags="success")
+                messages.success(
+                    request,
+                    f"You have successfully registered! Log in to continue.",
+                    extra_tags="success",
+                )
 
                 return render(request, "authentication/index.html", context)
 
         else:
             form = registrationForm(request.POST)
-            context = {"form2": form2,'mode' : mode,"form": form}
+            context = {"form2": form2, "mode": mode, "form": form}
             return render(request, "authentication/index.html", context)
-            # messages.warning(
-            #     request, f"The Login Credentials you entered are not correct!"
-            # )
     form2 = registrationForm()
     form = loginForm()
-    context = {"form": form, 'form2':form2}
-    # messages.info(request, f'Welcome! You have to login to access further pages!')
+    context = {"form": form, "form2": form2}
 
     return render(request, "authentication/index.html", context)
 
@@ -244,6 +264,9 @@ def home(request):
 def logoutView(request):
     logout(request)
     return redirect("home")
+
+
+
 
 
 ###############################################################################3
@@ -287,7 +310,6 @@ class UserRegisterView(GenericAPIView):
 
         # validating for already existing data
 
-
         try:
             us = User.objects.get(username=username)
             if us:
@@ -299,12 +321,11 @@ class UserRegisterView(GenericAPIView):
         except:
             pass
 
-
         try:
-            pn = User.objects.get(phoneNumber=phoneNumber,role=role)
-            print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',pn)
+            pn = User.objects.get(phoneNumber=phoneNumber, role=role)
+            print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", pn)
 
-            print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',pn)
+            print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", pn)
             if pn:
                 return Response(
                     {"status": "error", "message": "User already exists"},
@@ -327,8 +348,7 @@ class UserRegisterView(GenericAPIView):
             return Response(
                 {"status": "false", "message": serializer_class.errors},
                 status=status.HTTP_406_NOT_ACCEPTABLE,
-            ) 
-
+            )
 
 
 # @api_view(["GET"])
@@ -363,8 +383,7 @@ class generateKey:
 
 @authentication_classes([])
 class sendOtp(GenericAPIView):
-
-    def get(self,request):
+    def get(self, request):
 
         # permission_classes = [permissions.AllowAny,]
         if request.GET.get("phoneNumber"):
@@ -377,8 +396,7 @@ class sendOtp(GenericAPIView):
             )  # Just for demonstration
         try:
             user = User.objects.get(
-                phoneNumber=phoneNumber,
-                role=role
+                phoneNumber=phoneNumber, role=role
             )  # if user already exists the take this else create New One
         except ObjectDoesNotExist:
             return Response(
@@ -389,7 +407,9 @@ class sendOtp(GenericAPIView):
         user.counter += 1  # Update Counter At every Call
         user.save()  # Save the data
         keygen = generateKey()
-        key = base64.b32encode(keygen.returnValue(phoneNumber).encode())  # Key is generated
+        key = base64.b32encode(
+            keygen.returnValue(phoneNumber).encode()
+        )  # Key is generated
         OTP = pyotp.HOTP(key)  # HOTP Model for OTP is created
 
         # Change phoneNumber format from 09 to +251
@@ -400,7 +420,9 @@ class sendOtp(GenericAPIView):
         # send messages using hahusms
 
         messageOTP = (
-            "Dear "+ role +", Your OTP is "
+            "Dear "
+            + role
+            + ", Your OTP is "
             + OTP.at(user.counter)
             + ". It will exprire in 15 minutes. EventTray"
         )
@@ -429,7 +451,7 @@ class sendOtp(GenericAPIView):
             return Response(
                 {"status": "error", "message": "Error Occured! Try again in a few"},
                 status=status.HTTP_400_BAD_REQUEST,
-        )  # Just for demonstration
+            )  # Just for demonstration
 
 
 @authentication_classes([])

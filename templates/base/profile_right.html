@@ -1,0 +1,57 @@
+
+
+
+
+
+
+	<div class="col-md-4">
+        <div class="card card-profile card-secondary">
+            <div class="card-header" style="background-image: url('{{ user.coverPicture.url }}')">
+                <div class="profile-picture">
+                    <div class="avatar avatar-xl">
+                        <img src="{{ user.profilePicture.url }}" alt="..." class="avatar-img rounded-circle">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="user-profile text-center">
+                    <div class="name">{{ user.firstName }} {{ user.lastName }}</div>
+                    <div class="job" style="font-size: larger;">@{{user.username}}</div>
+                    <div class="desc" style="font-size: larger; ;">{{user.email}}</div>
+                    <div class="social-media">
+                        <a class="btn btn-info btn-twitter btn-sm btn-link" href="{{organizer.twitter}}"> 
+                            <span class="btn-label just-icon"><i class="flaticon-twitter"></i> </span>
+                        </a>
+                        <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="{{organizer.telegram}}"> 
+                            <span class="btn-label just-icon"><i class="flaticon-message"></i> </span> 
+                        </a>
+                        <a class="btn btn-primary btn-sm btn-link" rel="publisher" href="{{organizer.facebook}}"> 
+                            <span class="btn-label just-icon"><i class="flaticon-facebook"></i> </span> 
+                        </a>
+                        <a class="btn btn-danger btn-sm btn-link" rel="publisher" href="{{organizer.instagram}}"> 
+                            <span class="btn-label just-icon"><i class="flaticon-instagram"></i> </span> 
+                        </a>
+                    </div>
+                    <div class="view-profile">
+                        <a href="#" class="btn btn-outline-secondary btn-block" style="font-size: larger;">{{user.phoneNumber}}</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="row user-stats text-center">
+                    <div class="col">
+                        <div class="number">{{organizer.events}}</div>
+                        <div class="title">Events</div>
+                    </div>
+                    <div class="col">
+                        <div class="number">{{organizer.followers}}</div>
+                        <div class="title">Followers</div>
+                    </div>
+                    <div class="col">
+                        <div class="number">134</div>
+                        <div class="title">Rating</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,187 @@
+{% extends 'base/head.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+<!-- Fonts and icons -->
+<script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+<script>
+	WebFont.load({
+		google: { "families": ["Open+Sans:300,400,600,700"] },
+		custom: { "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ["{% static 'assets/css/fonts.css' %}"] },
+		active: function () {
+			sessionStorage.fonts = true;
+		}
+	});
+</script>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/azzara.min.css' %}">
+
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<!-- <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}"> -->
+</head>
+
+
+{% endblock head %}
+
+{% block body %}
+
+<body>
+	<div class="wrapper">
+		<!--
+			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
+		-->
+		<div class="main-header" data-background-color="purple">
+			<!-- Logo Header -->
+			{% include 'base/header.html' %}
+			<!-- End Logo Header -->
+			{% include 'base/nav.html' %}
+			<!-- Navbar Header -->
+
+			<!-- End Navbar -->
+		</div>
+
+		<!-- Sidebar -->
+
+		{% include 'base/sidebar.html' %}
+
+		<!-- End Sidebar -->
+
+		<div class="main-panel">
+			<div class="content">
+				<div class="page-inner">
+					<div class="page-header">
+						<h4 class="page-title">Organizer Info Setup</h4>
+						<!-- <div class="btn-group btn-group-page-header ml-auto">
+							<button type="button"
+								class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-ellipsis-h"></i>
+							</button>
+							<div class="dropdown-menu">
+								<div class="arrow"></div>
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<a class="dropdown-item" href="#">Something else here</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Separated link</a>
+							</div>
+						</div> -->
+					</div>
+
+				
+					<div class="row">
+						<div class="col-md-8">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-head-row">
+										<div class="card-title">Before continuing fill this form</div>
+									</div>
+								</div>
+								<div class="card-body">
+										<!-- {{ form|crispy }} -->
+                                        <form action="" method="POST">
+                                            {% csrf_token %}
+                                            {% bootstrap_form form %}
+                                            <input type="submit" name="submit" class="btn btn-info mt-2" style="float: right; " value="Done"  id="">
+                                        </form>
+								</div>
+							</div>
+						</div>
+                        {% include 'base/col_right.html' %}
+
+					</div>
+
+					<ul class="nav nav-tabs" id="myTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Home</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Profile</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">Contact</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="disabled-tab" data-bs-toggle="tab" data-bs-target="#disabled-tab-pane" type="button" role="tab" aria-controls="disabled-tab-pane" aria-selected="false" disabled>Disabled</button>
+  </li>
+</ul>
+<div class="tab-content" id="myTabContent">
+  <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">dsfsdfsdfsdfsd</div>
+  <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">uyyttty</div>
+  <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">111111111111111111</div>
+  <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div>
+</div>
+				
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Custom template | don't include it in your project! -->
+	
+		<!-- End Custom template -->
+	</div>
+	</div>
+
+
+
+	<!--   Core JS Files   -->
+	<script src="{% static 'assets/js/core/jquery.3.2.1.min.js'  %}"></script>
+	<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+	<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+
+	<!-- jQuery UI -->
+	<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+	<!-- Moment JS -->
+	<script src="{% static 'assets/js/plugin/moment/moment.min.js' %}"></script>
+
+	<!-- Chart JS -->
+	<script src="{% static 'assets/js/plugin/chart.js/chart.min.js' %}"></script>
+
+	<!-- jQuery Sparkline -->
+	<script src="{% static 'assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+
+	<!-- Chart Circle -->
+	<script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+
+	<!-- Datatables -->
+	<script src="{% static 'assets/js/plugin/datatables/datatables.min.js' %}"></script>
+
+	<!-- Bootstrap Notify -->
+	<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+
+	<!-- Bootstrap Toggle -->
+	<script src="{% static 'assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+
+	<!-- jQuery Vector Maps -->
+	<script src="{% static 'assets/js/plugin/jqvmap/jquery.vmap.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+
+	<!-- Google Maps Plugin -->
+	<script src="{% static 'assets/js/plugin/gmaps/gmaps.js' %}"></script>
+
+	<!-- Sweet Alert -->
+	<script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+
+	<!-- Azzara JS -->
+	<script src="{% static 'assets/js/ready.min.js' %}"></script>
+
+	<!-- Azzara DEMO methods, don't include it in your project! -->
+	<script src="{% static 'assets/js/setting-demo.js' %}"></script>
+	<!-- <script src="{% static 'assets/js/demo.js' %}"></script> -->
+</body>
+
+
+
+{% endblock body %}

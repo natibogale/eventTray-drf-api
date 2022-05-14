@@ -68,6 +68,8 @@ INSTALLED_APPS = [
     "rest_framework",
     "authentication",
     "events",
+    "organizer",
+    
     "ckeditor",
     "crispy_forms",
     "dj_static",
@@ -103,13 +105,13 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "eventTray.context_processors.fixed"
             ],
         },
     },
 ]
 
 WSGI_APPLICATION = "eventTray.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases

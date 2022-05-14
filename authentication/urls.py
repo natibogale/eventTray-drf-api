@@ -15,8 +15,6 @@ urlpatterns = [
     path("verify/otp", verifyOtp, name="verify-otp"),
 
 
-
-
-    path('organizer/', include('events.urls')),
+    path('organizer/', include('organizer.urls')),
 
 ]

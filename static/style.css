@@ -81,6 +81,11 @@ border: 0px;
 
 }
 
+.helptext{
+  color: rgb(31, 138, 209);
+  font-weight: bold;
+}
+
 .input-field {
   max-width: 380px;
   width: 100%;
@@ -92,6 +97,9 @@ border: 0px;
   display: grid;
   grid-template-columns: 15% 85%;
   padding: 0 0.4rem;
+  text-align: center;
+  font-size: 18px;
+
   position: relative;
 }
 

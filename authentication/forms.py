@@ -65,7 +65,7 @@ class registrationForm(forms.ModelForm):
             'firstName': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"First Name", "class": "input-field"}),
             'lastName': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"Last Name", "class": "input-field"}),
             'email': TextInput(attrs={'type': 'email', 'autocomplete':"off", "placeholder":"Email", "class": "input-field"}),
-            'role': TextInput(attrs={'type': 'select' ,"label":"None",'autocomplete':"off", "placeholder":"Role", "class": "input-field"}),
+            # 'role': TextInput(attrs={'type': 'select' ,"label":"None",'autocomplete':"off", "placeholder":"Role", "class": "input-field"}),
             'phoneNumber': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"Phone Number 09- Format", "class": "input-field" })
         }
         labels = {
@@ -77,7 +77,10 @@ class registrationForm(forms.ModelForm):
             "phoneNumber": ""
 
         }
+        help_texts = {
+            'username': 'If you are an organization, put the name under the business license for First and Last Name!',
 
+        }
 
 
 
@@ -88,3 +91,48 @@ class otpForm(forms.Form):
         label="",
     widget=forms.TextInput(attrs={'type': 'text', 'onfocus':"setCursorInputPosition(this, this.value.length);", 'minlength': 6, 'autocomplete':"off", "class": "input-field middle" })        
     ) 
+
+
+
+
+
+
+
+class organizerForm(forms.ModelForm):
+
+    # organizer = forms.CharField(widget=forms.HiddenInput(), required=False)
+
+    class Meta:
+        model = Organizer
+        fields = ('displayName','organizerType','twitter','telegram','facebook','instagram')
+
+
+    # organizer = forms.ChoiceField(choices = [])
+    # def __init__(self, *args, **kwargs):
+    #     user = kwargs.pop('user')
+    #     super(organizerForm, self).__init__(*args, **kwargs)
+    #     self.fields['organizer'].choices = [(x.pk,x.firstName+" "+x.lastName) for x in User.objects.filter(id=user)]
+
+    
+        # widgets = {
+        #     'email': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"Username", "class": "input-field"}),
+        #     'displayName': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"First Name", "class": "input-field"}),
+        #     'twitter': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"You can leave this field empty", "class": "input-field"}),
+        #     'telegram': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"You can leave this field empty", "class": "input-field"}),
+        #     'facebook': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"You can leave this field empty", "class": "input-field" }),
+        #     'instagram': TextInput(attrs={'type': 'text', 'autocomplete':"off", "placeholder":"You can leave this field empty", "class": "input-field" })
+
+        # }
+    #     labels = {
+    #         'username': "",
+    #         "firstName":"",
+    #         "lastName":"",
+    #         "email":"",
+    #         "role":"",
+    #         "phoneNumber": ""
+
+    #     }
+    #     help_texts = {
+    #         'username': 'If you are an organization, put the name under the business license for First and Last Name!',
+
+    #     }

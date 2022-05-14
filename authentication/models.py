@@ -17,6 +17,12 @@ roles = (
     ("Checker", "Checker"),
 )
 
+types = (
+    ("Individual", "Individual"),
+
+    ("Organization", "Organization"),
+)
+
 
 gender = (
     ("Male", "Male"),
@@ -120,19 +126,21 @@ class User(AbstractBaseUser):
         default="Profile_Pictures/default.png",
         verbose_name="Profile Picture",
     )
-    date_joined = models.DateTimeField(auto_now_add=True, verbose_name="date joined")
-    last_login = models.DateTimeField(auto_now=True, verbose_name="last login")
-    is_active = models.BooleanField(default=True)
+    coverPicture = models.ImageField(
+        upload_to="Cover_Pictures/",
+        default="Cover_Pictures/cover.png",
+        verbose_name="Cover Picture"
+    )
+    email = models.EmailField(verbose_name="Organizer Email", unique=True, blank=True, null=True)
     counter = models.IntegerField(default=0, blank=False)
     role = models.CharField(
         choices=roles, max_length=100, verbose_name="Role", blank=True
     )
-    email = models.EmailField(verbose_name="Organizer Email", blank=True, null=True)
     token = models.CharField(verbose_name="Token", max_length=500)
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name="date joined")
     last_login = models.DateTimeField(auto_now=True, verbose_name="last login")
-    is_admin = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
+    is_admin = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
     is_authenticated = models.BooleanField(default=True)
@@ -200,39 +208,59 @@ class User(AbstractBaseUser):
         return True
 
 
-
-
-
-
-
-
-
 class Organizer(models.Model):
 
-    organizer = models.ForeignKey('User', on_delete=models.CASCADE, verbose_name="Organizer")
-    email = models.EmailField(max_length=150, unique=True)
+    organizer = models.OneToOneField(
+        "User", on_delete=models.CASCADE, verbose_name="Organizer",primary_key=True,
+    )
+    
 
-    # phoneValidator = RegexValidator(
-    #     regex=r"^\+?1?\d{10}$",
-    #     message="Please enter your phonenumber in the format starting with: 09",
-    # )
-    # organizerPhone = models.CharField(
-    #     validators=[phoneValidator],
-    #     max_length=10,
-    #     verbose_name="Organizer Phone",
-    #     blank=True, null=True
-    # )
-    twitter  = models.CharField(verbose_name="Twitter Link", blank=True,null=True, max_length = 150)
-    telegram  = models.CharField(verbose_name="Telegram Link", blank=True,null=True, max_length = 150)
-    instagram  = models.CharField(verbose_name="Instagram Link", blank=True,null=True, max_length = 150)
-    verifyingDocument  = models.FileField(upload_to="Verifying_Document", verbose_name="Verifying Document" , blank=True, null=True)
-    date_joined = models.DateTimeField(auto_now_add=True, verbose_name="date joined")
+    displayName = models.CharField(
+        max_length=150, verbose_name="Business Display Name",  help_text="Enter the name you want Customers to identify your business by."
+    )
+    organizerType  = models.CharField(choices=types, verbose_name="Organizer Type" , default="Organization", max_length = 150)
+    
+
+    twitter = models.CharField(
+        verbose_name="Twitter Link", blank=True, null=True, max_length=150
+    )
+    telegram = models.CharField(
+        verbose_name="Telegram Link", blank=True, null=True, max_length=150
+    )
+    facebook = models.CharField(
+        verbose_name="Facebook", blank=True, null=True, max_length=150
+    )
+    instagram = models.CharField(
+        verbose_name="Instagram Link", blank=True, null=True, max_length=150
+    )
+    verifyingDocument = models.FileField(
+        upload_to="Verifying_Document",
+        verbose_name="Verifying Document",
+        blank=True,
+        null=True,
+    )
     verifiedOrganizer = models.BooleanField(default=False)
-
-
+    totalVisitors = models.CharField(
+        verbose_name="Total Visitors", blank=True, null=True, default=0, max_length=150
+    )
+    dailyVisitors = models.CharField(
+        verbose_name="Daily Visitors", blank=True, null=True, default=0, max_length=150
+    )
+    followers = models.CharField(
+        verbose_name="Followers", blank=True, null=True, default=0, max_length=150
+    )
+    events = models.CharField(
+        verbose_name="Total Events", blank=True, null=True, default=0, max_length=150
+    )
+    sales = models.CharField(
+        verbose_name="Total Sales", blank=True, null=True, default=0, max_length=150
+    )
+    tickets = models.CharField(
+        verbose_name="Sold Tickets", blank=True, null=True, default=0, max_length=150
+    )
 
     class Meta:
         verbose_name_plural = "Organizer Details"
 
     def __str__(self):
-        return self.organizer
+        return self.organizer.username
