@@ -85,6 +85,12 @@ danger-color : #f3545d
 
 -------------------------------------------------------------------*/
 /* 	 Background Body */
+
+
+
+
+
+
 body {
   background: #f9fbfd; }
   body[data-background-color="bg1"] {
@@ -7696,3 +7702,12 @@ div.table-responsive > div.dataTables_wrapper > div.row {
     padding: 60px 15px !important; } }
 
 /*# sourceMappingURL=azzara.css.map */
+
+
+
+
+.btn-status{
+  border-radius: 50px;
+  padding: 0;
+  
+  }

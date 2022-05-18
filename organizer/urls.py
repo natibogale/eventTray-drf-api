@@ -11,6 +11,7 @@ urlpatterns = [
      path('', views.organizerHome,name="organizer-home"),
      path('setup/', views.organizerSetup,name="organizer-setup"),
      path('profile/<username>', views.organizerProfileView,name="organizer-profile"),
+     path('events/', include('events.urls')),
 
 
 

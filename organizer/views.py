@@ -12,6 +12,8 @@ from django.shortcuts import (
     render,
 )
 from .forms import *
+from .models import *
+
 # Create your views here.
 
 
@@ -87,10 +89,60 @@ def organizerSetup(request):
 
 
 @login_required
-@organizerIsSetup
+# @organizerIsSetup
 def organizerProfileView(request, username):
     obj = get_object_or_404(User, username=username)
     dire = User.objects.filter(username=request.user)
+    org = get_object_or_404(Organizer, organizer=request.user.id)
+    if obj in dire:
+        form = profileUpdateForm(request.POST or None,request.FILES or None, instance=obj)
+        form2 = organizerForm(request.POST or None, instance=org)
+        if request.method=="POST" and request.POST.get('profile', None):
+            if form.is_valid():
+                ref = form.cleaned_data["username"]
+                form.save()
+                messages.success(
+                    request, f'"{ ref }"   your profile has been updated!',extra_tags="success")
+                url = request.get_full_path()
+                # this = url.replace('update', '')
+                return redirect('organizer-profile',request.user)
+
+        # return render(request, "organizer/profile.html", context)
+        if request.method=="POST" and request.POST.get('detail', None):
+            if form2.is_valid():
+                form2.save()
+                messages.success(
+                    request, f'Your details have been updated!',extra_tags="success")
+                url = request.get_full_path()
+                # this = url.replace('update', '')
+                return redirect('organizer-profile',request.user)
+
+        context = {
+            'form2': form2,
+            'name': obj,
+            "form" : form,
+        }
+        return render(request, "organizer/profile.html", context)            
+
+    else:
+        messages.warning(
+            request, f'You have no authorization to access or edit other users profiles!', extra_tags='warning')
+        return redirect('organizer-profile',request.user)
+
+
+    # return render(request, "organizer/profile.html")
+
+
+
+
+
+
+
+@login_required
+@organizerIsSetup
+def organizerDetailView(request, username):
+    obj = get_object_or_404(Organizer, organizer=username)
+    dire = Organizer.objects.filter(organizer=request.user)
     if obj in dire:
         form = profileUpdateForm(request.POST or None,
                                  request.FILES or None, instance=obj)
@@ -113,5 +165,3 @@ def organizerProfileView(request, username):
             request, f'You have no authorization to access or edit other users profiles!', extra_tags='warning')
         return redirect('organizer-profile',request.user)
 
-
-    # return render(request, "organizer/profile.html")

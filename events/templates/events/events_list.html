@@ -1,0 +1,251 @@
+{% extends 'base/head.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+<!-- Fonts and icons -->
+<script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+<script>
+	WebFont.load({
+		google: { "families": ["Open+Sans:300,400,600,700"] },
+		custom: { "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ["{% static 'assets/css/fonts.css' %}"] },
+		active: function () {
+			sessionStorage.fonts = true;
+		}
+	});
+</script>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'assets/css/azzara.min.css' %}">
+
+<!-- CSS Just for demo purpose, don't include it in your project -->
+<!-- <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}"> -->
+</head>
+
+
+{% endblock head %}
+
+{% block body %}
+
+<body>
+	<div class="wrapper">
+		<!--
+			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
+		-->
+		<div class="main-header" data-background-color="purple">
+			<!-- Logo Header -->
+			{% include 'base/header.html' %}
+			<!-- End Logo Header -->
+			{% include 'base/nav.html' %}
+			<!-- Navbar Header -->
+
+			<!-- End Navbar -->
+		</div>
+
+		<!-- Sidebar -->
+
+		{% include 'base/sidebar.html' %}
+
+		<!-- End Sidebar -->
+
+		<div class="main-panel">
+			<div class="content">
+				<div class="page-inner">
+					<div class="page-header">
+						<h4 class="page-title">Events List</h4>
+						<!-- <div class="btn-group btn-group-page-header ml-auto">
+							<button type="button"
+								class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle"
+								data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<i class="fa fa-ellipsis-h"></i>
+							</button>
+							<div class="dropdown-menu">
+								<div class="arrow"></div>
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<a class="dropdown-item" href="#">Something else here</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="#">Separated link</a>
+							</div>
+						</div> -->
+					</div>
+
+				
+		
+							<div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">My Events</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="multi-filter-select" class="display table table-striped table-hover" >
+                                                <thead>
+                                                    <tr>
+                                                        <th>Event</th>
+                                                        <th>Payment</th>
+                                                        <th>Event Type</th>
+                                                        <th>Published</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>Event</th>
+                                                        <th>Payment</th>
+                                                        <th>Event Type</th>
+                                                        <th>Published</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </tfoot>
+                                                <tbody>
+                                                
+                                                {% if events %}
+                                                {% for event in events %}
+                                                    <tr>
+                                                        <td><a href="{% url 'event-details' event.id %}">{{ event.eventName }}</a></td>
+                                                        <td>{{event.payment}}</td>
+                                                        <td>{{event.eventType}}</td>
+                                                        {% if event.is_published %}
+                                                        <td class=" btn-info btn-success">Published</td>
+                                                        {% else %}
+                                                        <td class=" btn-info btn-warning" >Not Published</td>
+
+                                                        {% endif %}
+                                                        {% if event.status == 'Upcoming' %}
+                                                        <td class=" btn-info btn-status">   {{event.status}}</td>
+
+                                                        {% elif event.status == 'Ended' %}
+                                                        <td class=" btn-info btn-danger">   {{event.status}}</td>
+
+                                                        {% elif event.status == 'Happening' %}
+                                                        <td class=" btn-info btn-warning">   {{event.status}}</td>
+                                                        {% endif %}
+                                                    </tr>
+                                                    {% endfor %}
+                                                    {% endif %}
+
+
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+					
+
+					
+				
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Custom template | don't include it in your project! -->
+	
+		<!-- End Custom template -->
+	</div>
+	</div>
+
+
+
+	<!--   Core JS Files   -->
+	<script src="{% static 'assets/js/core/jquery.3.2.1.min.js'  %}"></script>
+	<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+	<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+
+	<!-- jQuery UI -->
+	<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+	<!-- Moment JS -->
+	<script src="{% static 'assets/js/plugin/moment/moment.min.js' %}"></script>
+
+	<!-- Chart JS -->
+	<script src="{% static 'assets/js/plugin/chart.js/chart.min.js' %}"></script>
+
+	<!-- jQuery Sparkline -->
+	<script src="{% static 'assets/js/plugin/jquery.sparkline/jquery.sparkline.min.js' %}"></script>
+
+	<!-- Chart Circle -->
+	<script src="{% static 'assets/js/plugin/chart-circle/circles.min.js' %}"></script>
+
+	<!-- Datatables -->
+	<script src="{% static 'assets/js/plugin/datatables/datatables.min.js' %}"></script>
+
+	<!-- Bootstrap Notify -->
+	<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+
+	<!-- Bootstrap Toggle -->
+	<script src="{% static 'assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+
+	<!-- jQuery Vector Maps -->
+	<script src="{% static 'assets/js/plugin/jqvmap/jquery.vmap.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jqvmap/maps/jquery.vmap.world.js' %}"></script>
+
+	<!-- Google Maps Plugin -->
+	<script src="{% static 'assets/js/plugin/gmaps/gmaps.js' %}"></script>
+
+	<!-- Sweet Alert -->
+	<script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+
+	<!-- Azzara JS -->
+	<script src="{% static 'assets/js/ready.min.js' %}"></script>
+
+	<!-- Azzara DEMO methods, don't include it in your project! -->
+	<script src="{% static 'assets/js/setting-demo.js' %}"></script>
+
+
+
+    <script >
+		$(document).ready(function() {
+			$('#basic-datatables').DataTable({
+			});
+
+			$('#multi-filter-select').DataTable( {
+                responsive: true,
+
+				"pageLength": 5,
+				initComplete: function () {
+					this.api().columns().every( function () {
+						var column = this;
+						var select = $('<select class="form-control"><option value=""></option></select>')
+						.appendTo( $(column.footer()).empty() )
+						.on( 'change', function () {
+							var val = $.fn.dataTable.util.escapeRegex(
+								$(this).val()
+								);
+
+							column
+							.search( val ? '^'+val+'$' : '', true, false )
+							.draw();
+						} );
+
+						column.data().unique().sort().each( function ( d, j ) {
+							select.append( '<option value="'+d+'">'+d+'</option>' )
+						} );
+					} );
+				}
+			});
+
+	
+
+		});
+	</script>
+
+
+
+	<!-- <script src="{% static 'assets/js/demo.js' %}"></script> -->
+</body>
+
+
+
+{% endblock body %}

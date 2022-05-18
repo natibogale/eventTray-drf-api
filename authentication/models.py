@@ -216,7 +216,7 @@ class Organizer(models.Model):
     
 
     displayName = models.CharField(
-        max_length=150, verbose_name="Business Display Name",  help_text="Enter the name you want Customers to identify your business by."
+        max_length=150, verbose_name="Business Display Name",  help_text="A name you want Customers to identify your business by. For organizations input the name of your organization."
     )
     organizerType  = models.CharField(choices=types, verbose_name="Organizer Type" , default="Organization", max_length = 150)
     
@@ -248,6 +248,9 @@ class Organizer(models.Model):
     )
     followers = models.CharField(
         verbose_name="Followers", blank=True, null=True, default=0, max_length=150
+    )
+    rating = models.CharField(
+        verbose_name="Rating", blank=True, null=True, default=0, max_length=150
     )
     events = models.CharField(
         verbose_name="Total Events", blank=True, null=True, default=0, max_length=150

@@ -5,19 +5,18 @@ from authentication.models import *
 
 
 def fixed(request):
-    organizer = None    
+    organizer = None
     try:
-        organizer= Organizer.objects.get(organizer=request.user.id)
-
-        context={
-            'user': user,
-            'organizer': organizer
+        organizer = Organizer.objects.get(organizer=request.user.id)
+        categories = Categories.objects.all()
+        context = {
+            "user": user,
+            "organizer": organizer,
+            "categories": categories,
         }
-        return(context)
+        return context
 
     except Exception as e:
-        context = {
-            'organizer': organizer
-        }
-        
-        return(context)
+        context = {"organizer": organizer}
+
+        return context

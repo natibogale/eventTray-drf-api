@@ -292,13 +292,10 @@ class APIOverview(GenericAPIView):
 @authentication_classes([])
 class UserRegisterView(GenericAPIView):
     permission_classes = [permissions.AllowAny]
-
+    serializer_class = UserRegisterSerializer
+    
     def post(self, request):
-        # print(
-        #     "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
-        #     request.data[1],
-        #     len(request.data),
-        # )
+
         hashed = make_password(request.data["password"])
         request.data["password"] = hashed
 
@@ -323,9 +320,7 @@ class UserRegisterView(GenericAPIView):
 
         try:
             pn = User.objects.get(phoneNumber=phoneNumber, role=role)
-            print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", pn)
 
-            print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq", pn)
             if pn:
                 return Response(
                     {"status": "error", "message": "User already exists"},

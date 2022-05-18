@@ -94,9 +94,9 @@
                                                 Settings</button>
                                         </li>
                                         <li class="nav-item" role="presentation">
-                                            <button class="nav-link" id="profile-tab" data-bs-toggle="tab"
+                                            <button class="nav-link {{active}}" id="profile-tab" data-bs-toggle="tab"
                                                 data-bs-target="#profile-tab-pane" type="button" role="tab"
-                                                aria-controls="profile-tab-pane" aria-selected="false">Organizer
+                                                aria-controls="profile-tab-pane" aria-selected="{{selected}}">Organizer
                                                 Details</button>
                                         </li>
                                     
@@ -107,12 +107,18 @@
                                             <form action="" enctype="multipart/form-data" method="POST">
                                                 {% csrf_token %}
                                                 {% bootstrap_form form %}
-                                                <input type="submit" name="submit" class="btn btn-info mt-2"
+                                                <input type="submit" name="profile" class="btn btn-info mt-2"
                                                     style="float: right; " value="Update" id="">
                                             </form>
                                         </div>
+                                        
                                         <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
-                                            aria-labelledby="profile-tab" tabindex="0">uyyttty</div>
+                                            aria-labelledby="profile-tab" tabindex="0">      <form action="" enctype="multipart/form-data" method="POST">
+                                                {% csrf_token %}
+                                                {% bootstrap_form form2 %}
+                                                <input type="submit" name="detail" class="btn btn-info mt-2"
+                                                    style="float: right; " value="Update" id="">
+                                            </form></div>
                                         <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel"
                                             aria-labelledby="contact-tab" tabindex="0">111111111111111111</div>
                                         <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel"
