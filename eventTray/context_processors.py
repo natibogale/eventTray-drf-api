@@ -9,14 +9,39 @@ def fixed(request):
     try:
         organizer = Organizer.objects.get(organizer=request.user.id)
         categories = Categories.objects.all()
+        cities = Cities.objects.all()
+        places = Venues.objects.all()
+
         context = {
             "user": user,
             "organizer": organizer,
             "categories": categories,
+            "cities": cities,
+            "places": places,
         }
         return context
 
     except Exception as e:
         context = {"organizer": organizer}
+
+        return context
+
+
+
+
+def locations(request):
+    some = None
+    try:
+        cities = Cities.objects.all()
+        venues = Venues.objects.all()
+
+        context = {
+            "cities": cities,
+            "venues": venues,
+        }
+        return context
+
+    except Exception as e:
+        context = {"some": some}
 
         return context

@@ -22,8 +22,8 @@ class profileUpdateForm(forms.ModelForm):
 
 
 
-# class organizerForm(forms.ModelForm):
-#     class Meta:
-#         model = Organizer
-#         fields = ('displayName','organizerType','twitter','telegram','facebook','instagram')
+class organizerForm(forms.ModelForm):
+    class Meta:
+        model = Organizer
+        fields = ('displayName','organizerType','twitter','telegram','facebook','instagram')
 

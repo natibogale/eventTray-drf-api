@@ -107,7 +107,7 @@
                                                 {% if events %}
                                                 {% for event in events %}
                                                     <tr>
-                                                        <td><a href="{% url 'event-details' event.id %}">{{ event.eventName }}</a></td>
+                                                        <td><a href="{% url 'event-preview' event.id %}"> {{ event.eventName }}</a></td>
                                                         <td>{{event.payment}}</td>
                                                         <td>{{event.eventType}}</td>
                                                         {% if event.is_published %}
@@ -120,7 +120,7 @@
                                                         <td class=" btn-info btn-status">   {{event.status}}</td>
 
                                                         {% elif event.status == 'Ended' %}
-                                                        <td class=" btn-info btn-danger">   {{event.status}}</td>
+                                                        <td class=" btn-info btn-danger">   {{event. }}</td>
 
                                                         {% elif event.status == 'Happening' %}
                                                         <td class=" btn-info btn-warning">   {{event.status}}</td>
@@ -139,7 +139,7 @@
                             </div>
 					
 
-					
+						
 				
 				</div>
 			</div>
@@ -213,7 +213,8 @@
 			$('#multi-filter-select').DataTable( {
                 responsive: true,
 
-				"pageLength": 5,
+				"pageLength": 10,
+				order:[],
 				initComplete: function () {
 					this.api().columns().every( function () {
 						var column = this;
@@ -230,7 +231,9 @@
 						} );
 
 						column.data().unique().sort().each( function ( d, j ) {
-							select.append( '<option value="'+d+'">'+d+'</option>' )
+							// select.append( '<option value="'+d +'">'+d+'</option>' )
+							select.append( "<option value='" +d+ "'>"+d+"</option>" )
+
 						} );
 					} );
 				}

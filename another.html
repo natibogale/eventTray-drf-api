@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Autofill suggestions (custom elements)</title>
+<!-- Default styling. Feel free to remove! -->
+<script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
+
+<link href="https://api.mapbox.com/mapbox-assembly/v1.3.0/assembly.min.css" rel="stylesheet">
+<script id="search-js" defer="" src="https://api.mapbox.com/search-js/v1.0.0-beta.9/web.js"></script>
+<script>        
+    const script = document.getElementById('search-js');
+    script.onload = function() {
+    mapboxsearch.autofill({
+    accessToken:  'pk.eyJ1IjoiZ2Vub2JhaXQiLCJhIjoiY2wzZTU0ZWhkMDh3NzNkcDYxOGJnZmJobyJ9.NvY2nXkZCfLy8qYJo1YPMA'
+    });
+    };
+    </script>
+<style>
+    body {
+      margin: 0;
+    }
+
+    #map {
+      height: 50vh;
+      width: 50vw;
+    }
+  </style>
+</head>
+<body>
+    <div id='map'></div>
+    
+    <form class="prose flex flex--column">
+<h3>Shipping</h3>
+<mapbox-address-autofill>
+<input class="input mb12" name="address" autocomplete="shipping address-line1" placeholder="Address">
+</mapbox-address-autofill>
+ 
+<input class="input mb12" name="apartment" autocomplete="shipping address-line2" placeholder="Apartment">
+<div class="flex">
+<input class="input mb12" name="city" autocomplete="shipping address-level2" placeholder="City">
+<input class="input mb12 ml6" name="state" autocomplete="shipping address-level1" placeholder="State">
+<input class="input mb12 ml6" autocomplete="shipping postal-code" placeholder="ZIP / Postcode">
+</div>
+ 
+<h3>Billing</h3>
+<mapbox-address-autofill>
+<input class="input mb12" name="address" autocomplete="billing address-line1" placeholder="Address">
+</mapbox-address-autofill>
+ 
+<input class="input mb12" name="apartment" autocomplete="billing address-line2" placeholder="Apartment">
+<div class="flex">
+<input class="input mb12" name="city" autocomplete="billing address-level2" placeholder="City">
+<input class="input mb12 ml6" name="state" autocomplete="billing address-level1" placeholder="State">
+<input class="input mb12 ml6" name="postcode" autocomplete="billing postal-code" placeholder="ZIP / Postcode">
+</div>
+</form>
+<script>
+const ACCESS_TOKEN =  
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiZ2Vub2JhaXQiLCJhIjoiY2wzZTU0ZWhkMDh3NzNkcDYxOGJnZmJobyJ9.NvY2nXkZCfLy8qYJo1YPMA"
+
+const script = document.getElementById('search-js');
+script.onload = () => {
+const elements = document.querySelectorAll('mapbox-address-autofill');
+for (const autofill of elements) {
+autofill.accessToken = ACCESS_TOKEN;
+}
+};
+
+</script>
+</body>
+</html>

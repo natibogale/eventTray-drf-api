@@ -12,6 +12,8 @@ urlpatterns = [
      path('create-event/', views.createEventView,name="create-event"),
      path('events-list/', views.eventsListView,name="events-list"),
      path('event-details/<id>', views.eventsDetailView,name="event-details"),
+     path('event-preview/<id>', views.eventPreview,name="event-preview"),
+
     #  path('add-events-images/<str>', views.addImages,name="add-event-images"),
 
 ]

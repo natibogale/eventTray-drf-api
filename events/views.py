@@ -22,7 +22,18 @@ def createEventView(request):
 
     if request.method == "POST":
         form = createEventForm(request.POST)
+        print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',request.POST['eventStartDate'], request.POST['eventEndDate'])
+        if request.POST['eventStartDate'] > request.POST['eventEndDate']:
+            print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+            messages.error(request, f'An event cannot end before its start date!',extra_tags="danger")
+            context={
+                "form":form,
+                "categories": categories,
+            }
+            return render(request, 'events/create_event.html',context)
+
         if form.is_valid():
+            print('ffffffffffffffffffffffffffffffffffffff',request.POST)
             user = User.objects.get(username=request.user.username)
             event = form.save(commit=False)
             event.organizer = user
@@ -68,7 +79,7 @@ def createEventView(request):
 def eventsListView(request):
 
     try:
-        events = Events.objects.filter(organizer=request.user.id)
+        events = Events.objects.filter(organizer=request.user.id).order_by('-date_added')
         context ={
             'events':events,
         }
@@ -107,6 +118,12 @@ def eventsDetailView(request, id):
         urlID = int(newUrl[len(newUrl)-1])
         updateEventImage(request,urlID)
         return redirect('event-details', id)
+    if request.POST and request.POST.get("deleteImage", None):
+        url = request.get_full_path()
+        newUrl = url.split('/')
+        urlID = int(newUrl[len(newUrl)-1])
+        deleteEventImage(request,urlID)
+        return redirect('event-details', id)
     if img:
         first = img[0].image
     else:
@@ -115,7 +132,10 @@ def eventsDetailView(request, id):
         form = createEventForm(request.POST or None,request.FILES or None, instance=obj)
         # form2 = ImagesForm(request.POST or None, instance=img)
         if request.method=="POST":
-
+            if request.POST['eventStartDate'] > request.POST['eventEndDate']:
+                print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
+                messages.error(request, f'An event cannot end before its start date!',extra_tags="danger")
+                return redirect('event-details',obj.id)
 
             if form.is_valid():
                 event = form.save(commit=False)
@@ -126,10 +146,14 @@ def eventsDetailView(request, id):
                 url = request.get_full_path()
                 # this = url.replace('update', '')
                 return redirect('event-details',obj.id)
+        urlB4 = request.get_full_path()
+        urlB4 = urlB4.split('/')
+        url = urlB4[len(urlB4)-1]
         context = {
             'form': form,
             'img':img,
-            'first':first
+            'first':first,
+            'url':url,
         }
         return render(request, "events/events_detail.html", context)
     else:
@@ -200,3 +224,45 @@ def updateEventImage(request,newUrl):
     except Exception as e:
         messages.error(request, "Error occured during your upload. Make sure file format is of PNG, JPEG, or JPG",extra_tags="danger")
         return redirect('event-details' ,newUrl)
+
+
+
+
+
+def deleteEventImage(request, newUrl):
+    id = request.POST['id']
+    obj = get_object_or_404(Images, id = id)
+    if obj:
+        obj.delete()
+        messages.success(request, f'Image has been deleted!', extra_tags="success")
+        return redirect('event-details' ,newUrl)
+    else:
+        return redirect('event-details' ,newUrl)
+
+
+
+
+
+
+
+
+
+def eventPreview(request, id):
+    obj = get_object_or_404(Events, id=id)
+    dire = Events.objects.filter(organizer=request.user.id)
+    if obj in dire:
+        try:
+            images = Images.objects.filter(event=obj.id)
+            first = images[0].image
+            print("sssssssssssssssssssssss", first)
+            context={
+                "event" : obj,
+                "images" : images,
+                "first": first,
+            }
+        except:
+            messages.error(request, f"Your event needs atleast one Image! You can add multiple", extra_tags="danger")
+            return redirect('event-details', id)
+
+
+        return render(request, "events/events_preview.html", context)

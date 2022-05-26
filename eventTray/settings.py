@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     "authentication",
     "events",
     "organizer",
+    "tickets",
     "ckeditor",
     "crispy_forms",
     "dj_static",
@@ -112,6 +113,8 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "eventTray.context_processors.fixed",
+                "eventTray.context_processors.locations",
+
             ],
         },
     },
@@ -166,7 +169,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE =  'Africa/Nouakchott'
 
 USE_I18N = True
 
