@@ -22,7 +22,7 @@
                 {% for image in img %}
                 {% if image.image == first %}
                 <div class="carousel-item active">
-                        <img class="d-block w-100"   id="imageChange" height="100%" src="{{ image.image.url }}" alt="First slide">
+                        <img class="d-block w-100 mb-5"   id="imageChange" height="100%" src="{{ image.image.url }}" alt="First slide">
                         <div class="row ">
                             <button type="button" class="col-6 btn btn-primary" data-toggle="modal" data-target="#changeImageModal" data-whatever={{ image.id }}  data-url={{image.image.url}}>
                                 Change Image
@@ -34,7 +34,7 @@
                     </div>
                 {% else %}
                 <div class="carousel-item">
-                        <img class="d-block w-100 "  id="imageChange" height="100%" src="{{ image.image.url }}" alt="First slide">
+                        <img class="d-block w-100 mb-5"  id="imageChange" height="100%" src="{{ image.image.url }}" alt="First slide">
                         <div class="row">
                             <button type="button" class="col-6 btn btn-primary" data-toggle="modal" data-target="#changeImageModal" data-whatever={{ image.id }}  data-url={{image.image.url}}>
                                 Change Image

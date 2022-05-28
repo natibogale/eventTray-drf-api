@@ -1,0 +1,90 @@
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+
+
+<!-- This is column 4 found at the right side....the supposedly sponsor card   -->
+
+
+<script src='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.js'></script>
+<link href='https://api.mapbox.com/mapbox-gl-js/v2.8.1/mapbox-gl.css' rel='stylesheet' />
+
+<style>
+    .coordinates {
+        background: rgba(0, 0, 0, 0.5);
+        color: #fff;
+        position: absolute;
+        bottom: 40px;
+        left: 10px;
+        padding: 5px 10px;
+        margin: 0;
+        font-size: 11px;
+        line-height: 18px;
+        border-radius: 3px;
+        display: none;
+    }
+</style>
+
+<div class="col-md-4">
+    <div class="card card-secondary bg-info-gradient">
+        <div class="card-header">
+            <div class="card-title">Event's Location </div>
+
+        </div>
+        <div id='map' style='width: 100%; height: 300px;'></div>
+        <pre id="coordinates" class="coordinates"></pre>
+
+        <script>
+            mapboxgl.accessToken = 'pk.eyJ1IjoiZ2Vub2JhaXQiLCJhIjoiY2wzZTU0ZWhkMDh3NzNkcDYxOGJnZmJobyJ9.NvY2nXkZCfLy8qYJo1YPMA';
+            var map = new mapboxgl.Map({
+                container: 'map',
+                style: 'mapbox://styles/mapbox/streets-v11',
+                center: [{{ event.eventLocation }}],
+                zoom: 15,
+            
+          });
+            map.addControl(new mapboxgl.NavigationControl());
+            const marker = new mapboxgl.Marker({
+                draggable: false
+                        })
+                .setLngLat([{{ event.eventLocation }}])
+                .addTo(map);
+
+        </script>
+
+
+
+    </div>
+    <div class="card card-secondary bg-info-gradient">
+        <div class="card-header">
+            <div class="card-title">EventTray</div>
+            <h4 class="">The easiest Place you can manage your events</h4>
+        </div>
+        <div class="card-body pb-0">
+            <div class="mb-4 mt-2">
+            </div>
+            <div class="pull-in" style="">
+                <img style="  width: 100%;
+                height: 100%; 
+                object-fit: contain;" src="{% static 'banner.jpg' %}" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
