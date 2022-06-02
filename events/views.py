@@ -129,7 +129,7 @@ def eventsDetailView(request, id):
     else:
         first =None
     if obj in dire:
-        form = createEventForm(request.POST or None,request.FILES or None, instance=obj)
+        form = updateEventForm(request.POST or None,request.FILES or None, instance=obj)
         # form2 = ImagesForm(request.POST or None, instance=img)
         if request.method=="POST":
             if request.POST['eventStartDate'] > request.POST['eventEndDate']:

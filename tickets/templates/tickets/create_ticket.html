@@ -1,0 +1,156 @@
+{% extends 'base/head.html' %}
+
+{% load static %}
+{% load bootstrap4 %}
+{% load crispy_forms_tags %}
+
+{% block head %}
+
+<!-- Fonts and icons -->
+<script src="{% static 'assets/js/plugin/webfont/webfont.min.js' %}"></script>
+<script>
+	WebFont.load({
+		google: { "families": ["Open+Sans:300,400,600,700"] },
+		custom: { "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular", "Font Awesome 5 Brands"], urls: ["{% static 'assets/css/fonts.css' %}"] },
+		active: function () {
+			sessionStorage.fonts = true;
+		}
+	});
+</script>
+
+<!-- CSS Files -->
+<link rel="stylesheet" href="{% static 'assets/css/bootstrap.min.css' %}">
+
+<link rel="stylesheet" href="{% static 'livepreview/assets/css/azzara.min.css' %}">
+
+
+
+</head>
+
+
+{% endblock head %}
+
+{% block body %}
+
+<body>
+	<div class="wrapper">
+		<!--
+			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
+		-->
+		<div class="main-header" data-background-color="purple">
+			<!-- Logo Header -->
+			{% include 'base/header.html' %}
+			<!-- End Logo Header -->
+			{% include 'base/nav.html' %}
+			<!-- Navbar Header -->
+
+			<!-- End Navbar -->
+		</div>
+
+		<!-- Sidebar -->
+
+		{% include 'base/sidebar.html' %}
+
+		<!-- End Sidebar -->
+
+		<div class="main-panel">
+			<div class="content">
+				<div class="page-inner">
+					<div class="page-header">
+
+					</div>
+
+
+					<div class="row">
+						<div class="col-md-8">
+							<div class="card">
+								<div class="card-header">
+									<div class="card-head-row">
+										<div class="card-title">Create Tickets for your events here! </div>
+									</div>
+								</div>
+								<div class="card-body">
+									<!-- {{ form|crispy }} -->
+									<form action="" method="POST">
+										{% csrf_token %}
+
+
+
+										{% bootstrap_form form %}
+
+
+										<!-- <input type="text" class="form-control" autocomplete="off" name="venue" list="selectVenue" /> -->
+										<datalist style="color: black; background-color: white;" id="selectTicketName">
+
+											<option value="Regular">Regular</option>
+											<option value="VIP">VIP</option>
+											<option value="VVIP">VVIP</option>
+
+										</datalist>
+
+
+
+
+
+										<input type="submit" name="submit" class="btn btn-info mt-2"
+											style="float: right; " value="Create" id="">
+									</form>
+
+
+								</div>
+							</div>
+						</div>
+						{% include 'base/col_right.html' %}
+
+					</div>
+
+
+
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Custom template | don't include it in your project! -->
+
+		<!-- End Custom template -->
+	</div>
+	</div>
+
+
+
+	<!--   Core JS Files   -->
+	<script src="{% static 'assets/js/core/jquery.3.2.1.min.js'  %}"></script>
+	<script src="{% static 'assets/js/core/popper.min.js' %}"></script>
+	<script src="{% static 'assets/js/core/bootstrap.min.js' %}"></script>
+
+	<!-- jQuery UI -->
+	<script src="{% static 'assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js' %}"></script>
+	<script src="{% static 'assets/js/plugin/jquery-ui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+
+	<!-- jQuery Scrollbar -->
+	<script src="{% static 'assets/js/plugin/jquery-scrollbar/jquery.scrollbar.min.js' %}"></script>
+
+	<!-- Moment JS -->
+	<script src="{% static 'assets/js/plugin/moment/moment.min.js' %}"></script>
+
+
+
+	<!-- Bootstrap Notify -->
+	<script src="{% static 'assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js' %}"></script>
+
+	<!-- Bootstrap Toggle -->
+	<script src="{% static 'assets/js/plugin/bootstrap-toggle/bootstrap-toggle.min.js' %}"></script>
+
+	<!-- Sweet Alert -->
+	<script src="{% static 'assets/js/plugin/sweetalert/sweetalert.min.js' %}"></script>
+
+	<!-- Azzara JS -->
+	<script src="{% static 'assets/js/ready.min.js' %}"></script>
+
+
+</body>
+
+
+
+{% endblock body %}

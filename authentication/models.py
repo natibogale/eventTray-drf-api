@@ -132,7 +132,7 @@ class User(AbstractBaseUser):
         verbose_name="Cover Picture"
     )
     email = models.EmailField(verbose_name="Organizer Email", unique=True, blank=True, null=True)
-    counter = models.IntegerField(default=0, blank=False)
+    counter = models.PositiveIntegerField(default=0, blank=False)
     role = models.CharField(
         choices=roles, max_length=100, verbose_name="Role", blank=True
     )

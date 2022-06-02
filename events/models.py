@@ -162,6 +162,7 @@ class Events(models.Model):
     is_verified = models.BooleanField(default=False)
     is_active = models.BooleanField(default=False)
     is_cancelled = models.BooleanField(default=False)
+    expired = models.BooleanField(default=False)
 
     class Meta:
         verbose_name_plural = "Events"
