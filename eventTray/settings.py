@@ -356,3 +356,4 @@ LOCATION_FIELD_PATH = STATIC_URL + "location_field"
 
 
 
+django_heroku.settings(locals())
