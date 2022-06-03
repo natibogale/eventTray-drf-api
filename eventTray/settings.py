@@ -13,8 +13,6 @@ environ.Env.read_env()
 
 
 
-# Activate Django-Heroku.
-django_heroku.settings(locals())
 
 
 
@@ -29,6 +27,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
 IMAGE_EXT = ['jpg','jpeg','png']
+
 
 
 
@@ -198,7 +197,7 @@ BOOTSTRAP4 = {
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-STATIC_ROOT =  os.path.join(BASE_DIR, "staticfiles") 
+STATIC_ROOT = "staticfiles"
 
 
 STATIC_URL = "static/"
@@ -354,3 +353,7 @@ LOCATION_FIELD = {
 LOCATION_FIELD_PATH = STATIC_URL + "location_field"
 
 
+
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
