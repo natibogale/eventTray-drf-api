@@ -89,7 +89,7 @@ def organizerSetup(request):
 
 
 @login_required
-# @organizerIsSetup
+@organizerIsSetup
 def organizerProfileView(request, username):
     obj = get_object_or_404(User, username=username)
     dire = User.objects.filter(username=request.user)

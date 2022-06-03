@@ -9,10 +9,10 @@ urlpatterns = [
     #  path('director/', views.director_view, name="director"),
     #  path('human-resources/', views.hr_view, name="hr"),
      path('', views.organizerHome,name="organizer-home"),
-     path('setup/', views.organizerSetup,name="organizer-setup"),
-     path('profile/<username>', views.organizerProfileView,name="organizer-profile"),
-     path('events/', include('events.urls')),
-     path('tickets/', include('tickets.urls')),
+     path('/setup/', views.organizerSetup,name="organizer-setup"),
+     path('/profile/<username>', views.organizerProfileView,name="organizer-profile"),
+     path('/events/', include('events.urls')),
+     path('/tickets/', include('tickets.urls')),
 
 
 
