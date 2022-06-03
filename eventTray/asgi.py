@@ -13,8 +13,8 @@ from django.core.asgi import get_asgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'eventTray.settings')
 
-from dj_static import Cling
+# from dj_static import Cling
 
-application = Cling(get_wsgi_application())
+# application = Cling(get_wsgi_application())
 
-# application = get_asgi_application()
+application = get_asgi_application()
