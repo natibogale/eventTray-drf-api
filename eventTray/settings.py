@@ -1,4 +1,4 @@
-
+import django_heroku
 
 from pathlib import Path
 import os
@@ -7,6 +7,16 @@ import environ
 env = environ.Env()
 # reading .env file
 environ.Env.read_env()
+
+
+
+
+
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
+
+
 
 
 # Environment Variables
@@ -32,7 +42,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.0.9", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["192.168.0.9", "127.0.0.1", "*","eventtray-api"]
 
 AUTH_USER_MODEL = "authentication.User"
 
@@ -81,6 +91,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
 ]
 
@@ -187,7 +198,7 @@ BOOTSTRAP4 = {
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-STATIC_ROOT = "staticfiles"
+STATIC_ROOT =  os.path.join(BASE_DIR, "staticfiles") 
 
 
 STATIC_URL = "static/"
