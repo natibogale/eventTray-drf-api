@@ -1,5 +1,4 @@
 import django_heroku
-
 from pathlib import Path
 import os
 import environ
@@ -23,7 +22,11 @@ HAHU_API_KEY = env("HAHU_API_KEY")
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 
+from pathlib import Path
+
+# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
 IMAGE_EXT = ['jpg','jpeg','png']
@@ -41,7 +44,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["192.168.0.9", "127.0.0.1", "*","eventtray-api.heroku.com"]
+ALLOWED_HOSTS = ["eventtray-api.heroku.com","192.168.0.7", "127.0.0.1", "*"]
 
 AUTH_USER_MODEL = "authentication.User"
 
@@ -197,14 +200,13 @@ BOOTSTRAP4 = {
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
-STATIC_ROOT = "staticfiles"
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
+STATIC_URL = "/static/"
 
-STATIC_URL = "static/"
+STATICFILES_DIRS = []
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, "static"),
-]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
@@ -354,6 +356,3 @@ LOCATION_FIELD_PATH = STATIC_URL + "location_field"
 
 
 
-
-# Activate Django-Heroku.
-django_heroku.settings(locals())
