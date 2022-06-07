@@ -169,7 +169,7 @@ def home(request):
                     + role
                     + ", Your OTP is "
                     + OTP.at(user.counter)
-                    + ". It will exprire in 10 minutes. EventTray"
+                    + ". It will exprire in 5 minutes. EventTray"
                 )
                 url = (
                     "https://sms.hahucloud.com/api/send?key="

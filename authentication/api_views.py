@@ -45,6 +45,7 @@ from datetime import timedelta, datetime
 
 
 from json import JSONEncoder
+import threading
 
 
 
@@ -137,34 +138,20 @@ class UserRegisterView(GenericAPIView):
             )
 
 
-# @api_view(["GET"])
-# def view_profile(request):
-
-#     # checking for the parameters from the URL
-
-#     if request.GET.get("username", None):
-#         try:
-#             user = User.objects.get(**request.GET.dict())
-#             data = UserRegisterSerializer(user)
-#             print(data.data)
-#             return Response(data.data)
-#         except:
-#             return Response(
-#                 "User Doesn't Exist",
-#                 status=status.HTTP_404_NOT_FOUND,
-#             )
-
-#     else:
-#         return Response(status=status.HTTP_404_NOT_FOUND)
 
 
-# This class returns the string needed to generate the key
-
+def increaseCounter(phoneNumber, role):
+    user = User.objects.get(
+                phoneNumber=phoneNumber, role=role
+            )
+    user.counter +=1
+    user.save()
 
 
 
 @authentication_classes([])
-class sendOtp(GenericAPIView):
+class SendOtp(GenericAPIView):
+
     def get(self, request):
 
         # permission_classes = [permissions.AllowAny,]
@@ -194,6 +181,10 @@ class sendOtp(GenericAPIView):
         )  # Key is generated
         OTP = pyotp.HOTP(key)  # HOTP Model for OTP is created
 
+
+        timer = threading.Timer(300.0, increaseCounter,[phoneNumber, role])
+        timer.start()
+
         # Change phoneNumber format from 09 to +251
         phoneNumber = list(phoneNumber)
         phoneNumber[0] = "+251"
@@ -201,12 +192,14 @@ class sendOtp(GenericAPIView):
 
         # send messages using hahusms
 
+
+        
         messageOTP = (
             "Dear "
             + role
             + ", Your OTP is "
             + OTP.at(user.counter)
-            + ". It will exprire in 15 minutes. EventTray"
+            + ". It will exprire in 5 minutes. EventTray"
         )
         url = (
             "https://sms.hahucloud.com/api/send?key="
@@ -234,6 +227,7 @@ class sendOtp(GenericAPIView):
                 {"status": "error", "message": "Error Occured! Try again in a few"},
                 status=status.HTTP_400_BAD_REQUEST,
             )  # Just for demonstration
+
 
 
 @authentication_classes([])
