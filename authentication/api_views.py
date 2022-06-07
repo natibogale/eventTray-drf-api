@@ -89,13 +89,14 @@ class UserRegisterView(GenericAPIView):
     def post(self, request):
 
         hashed = make_password(request.data["password"])
-        request.data["password"] = hashed
-
-        serializer_class = UserRegisterSerializer(data=request.data)
+        editRequest = request.copy()
+        editRequest.data["password"] = hashed
 
         username = request.data["username"]
         phoneNumber = request.data["phoneNumber"]
         role = request.data["role"]
+
+        serializer_class = UserRegisterSerializer(data=editRequest.data)
 
         # validating for already existing data
 
