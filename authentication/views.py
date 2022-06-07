@@ -48,7 +48,12 @@ from datetime import timedelta, datetime
 from json import JSONEncoder
 
 
-
+class generateKey:
+    @staticmethod
+    def returnValue(phone):
+        return (
+            str(phone) + str(datetime.date(datetime.now())) + "Some Random Secret Key"
+        )
 
 
 
