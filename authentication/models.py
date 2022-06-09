@@ -211,7 +211,7 @@ class User(AbstractBaseUser):
 class Organizer(models.Model):
 
     organizer = models.OneToOneField(
-        "User", on_delete=models.CASCADE, verbose_name="Organizer",primary_key=True,
+        "User", on_delete=models.CASCADE, verbose_name="Organizer ID", related_name="details",primary_key=True,
     )
     
 
@@ -222,16 +222,16 @@ class Organizer(models.Model):
     
 
     twitter = models.CharField(
-        verbose_name="Twitter Link", blank=True, null=True, max_length=150
+        verbose_name="Twitter", blank=True, null=True, max_length=150
     )
     telegram = models.CharField(
-        verbose_name="Telegram Link", blank=True, null=True, max_length=150
+        verbose_name="Telegram", blank=True, null=True, max_length=150
     )
     facebook = models.CharField(
         verbose_name="Facebook", blank=True, null=True, max_length=150
     )
     instagram = models.CharField(
-        verbose_name="Instagram Link", blank=True, null=True, max_length=150
+        verbose_name="Instagram", blank=True, null=True, max_length=150
     )
     verifyingDocument = models.FileField(
         upload_to="Verifying_Document",
@@ -258,9 +258,7 @@ class Organizer(models.Model):
     sales = models.CharField(
         verbose_name="Total Sales", blank=True, null=True, default=0, max_length=150
     )
-    tickets = models.CharField(
-        verbose_name="Sold Tickets", blank=True, null=True, default=0, max_length=150
-    )
+  
 
     class Meta:
         verbose_name_plural = "Organizer Details"

@@ -6,10 +6,13 @@ urlpatterns = [
 
     #All authentication urls api
     path("api/auth/create/", UserRegisterView.as_view(), name="add-user"),
-    path("api/profile/", UserProfileView.as_view(), name="view-profile"),
+    path("api/user/profile/", UserProfileView.as_view(), name="view-profile"),
     path("api/auth/otp/", SendOtp.as_view(), name="send-otp"),
     path("api/auth/verify/", VerifyOTP.as_view(), name="verify-otp"),
 
+
+    path("api/organizer/profile/", OrganizerProfileView.as_view(), name="view-profile-org"),
+    path("api/organizer/organizer-details/", OrganizerDetailView.as_view(), name="view-details-org"),
 
 
 

@@ -1,13 +1,12 @@
 
 from django.db.models import fields
 from rest_framework import serializers
-from .models import User
+from .models import *
 
 class UserRegisterSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'firstName', 'lastName', 'phoneNumber', 'role','password','email')
-
 
 
     def validate_date(self,data):
@@ -18,10 +17,15 @@ class UserRegisterSerializer(serializers.ModelSerializer):
         return data 
 
 
+
+
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('username', 'firstName', 'lastName', 'phoneNumber', 'role','password')
+        fields = ('id','username', 'firstName', 'lastName', 'phoneNumber', 'role','profilePicture','coverPicture','password')
+
+
 
 
 
@@ -33,3 +37,24 @@ class Loginserializer(serializers.ModelSerializer):
         read_only_fields = ['token']
 
 
+
+class OrganizerDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organizer
+        fields = ('organizer','displayName', 'organizerType', 'twitter', 'telegram',
+        'facebook','instagram')
+
+
+
+class OrganizerDetailProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Organizer
+        fields = "__all__"
+
+class OrganizerProfileSerializer(serializers.ModelSerializer):
+    
+    details = OrganizerDetailProfileSerializer(read_only=True)
+    
+    class Meta:
+        model = User
+        fields = ('id','username', 'firstName', 'lastName', 'phoneNumber', 'role','email','profilePicture','coverPicture','details')
