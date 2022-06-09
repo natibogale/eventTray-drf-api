@@ -170,7 +170,7 @@ class User(AbstractBaseUser):
             {
                 "username": self.username,
                 "phoneNumber": self.phoneNumber,
-                "exp": datetime.utcnow() + timedelta(hours=24),
+                "exp": datetime.utcnow() + timedelta(hours=72),
             },
             settings.SECRET_KEY,
             algorithm="HS256",

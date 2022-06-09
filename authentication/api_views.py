@@ -150,7 +150,6 @@ def increaseCounter(phoneNumber, role):
             )
     user.counter +=1
     user.save()
-    timer.cancel()
 
 
 
@@ -256,6 +255,7 @@ class VerifyOTP(GenericAPIView):
             keygen.returnValue(phoneNumber).encode()
         )  # Generating Key
         OTP = pyotp.HOTP(key)  # HOTP Model
+
         if OTP.verify(request.data["otp"], user.counter):  # Verifying the OTP
 
             user.counter += 1
@@ -285,10 +285,73 @@ class VerifyOTP(GenericAPIView):
 class UserProfileView(GenericAPIView):
     def get(self, request):
         user = request.user
+        print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',user)
         serializer = UserProfileSerializer(user)
         return Response(
             {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
         )
+
+    def put(self, request):
+        user = request.user
+
+        serializer_class = UserProfileSerializer(user, data=request.data ) 
+
+        if serializer_class.is_valid():
+            serializer_class.save()
+ 
+            return Response(
+            {"status": "success","message":"Profile Updated successfully!", "details": serializer_class.data}, status=status.HTTP_200_OK
+            )
+        else:
+            return Response({"status":"error", "message": serializer_class.errors},status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+
+class UserOrganizerProfileView(GenericAPIView):
+
+    def get(self, request):
+        username = request.GET.get('username')
+        user = request.user
+        try:
+            organizer = User.objects.get(username=username)
+            serializer = OrganizerProfileSerializer(organizer)
+            return Response(
+                {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"status": "error", "message": "Organizer not found!"}, status=status.HTTP_404_NOT_FOUND
+
+            )
+
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+
+class UserOrganizerListView(GenericAPIView):
+
+    def get(self, request):
+        user = request.user
+        try:
+            organizers = User.objects.filter(is_active=True)
+
+            serializer = OrganizerProfileSerializer(organizers, many=True)
+            return Response(
+                {"status": "success", "users": serializer.data}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            return Response(
+                {"status": "error", "message": "Organizers not found!"}, status=status.HTTP_404_NOT_FOUND
+
+            )
+
 
 
 @authentication_classes([JWTAuthentication])
@@ -311,6 +374,7 @@ class OrganizerProfileView(GenericAPIView):
 
         if serializer.is_valid():
             serializer.save()
+
             return Response(
             {"status": "success","message":"Profile Updated successfully!", "user": serializer.data}, status=status.HTTP_200_OK
             )
