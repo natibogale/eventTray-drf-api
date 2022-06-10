@@ -90,14 +90,14 @@ class OrganizerEventsView(GenericAPIView):
         user = request.user
         try:
             eventId = request.GET.get('id')
-            event = Events.objects.get(id=eventId,)
+            event = Events.objects.get(id=eventId,organizer=user)
             serializer_class = EventSerializer(event)
 
             return Response(
                 {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
             )
         except Exception as e:
-            event = Events.objects.all()
+            event = Events.objects.filter(organizer=user)
             serializer_class = EventSerializer(event,many=True)
             return Response(
                 {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
@@ -134,3 +134,47 @@ class CitiesListView(GenericAPIView):
             return Response(
                 {"status": "error", "message": "No Cities Found"}, status=status.HTTP_404_NOT_FOUND
             )  
+
+
+
+
+
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+class OrganizerEventImagesView(GenericAPIView):
+    serializer_class = eventImagesSerializer
+    parser_classes = (MultiPartParser, FormParser)
+
+    def post(self, request):
+        user = request.user
+
+        serializer_class = eventImagesSerializer(data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(
+                {"status": "success", "message":"Image added successfully!","image":serializer_class.data}, status=status.HTTP_201_CREATED
+
+            )
+        else:
+            return Response(
+                {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
+            ) 
+
+
+    def put(self, request):
+        user = request.user
+        id = request.data['id']
+        image = Images.objects.get(id=id)
+        serializer_class = eventImagesSerializer(image, data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(
+                {"status": "success", "message":"Image updated successfully!","image":serializer_class.data}, status=status.HTTP_201_CREATED
+
+            )
+        else:
+            return Response(
+                {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
+            ) 

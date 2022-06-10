@@ -28,9 +28,15 @@ CATEGORIES = (
     ("Training", "Training"),
 )
 
+
+class eventImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Images
+        fields = "__all__"
+
 class EventSerializer(serializers.ModelSerializer):
     eventCategories = serializers.MultipleChoiceField(choices=CATEGORIES)
-
+    images = eventImagesSerializer(many=True, read_only=True)
 
     class Meta:
         model = Events
@@ -42,4 +48,8 @@ class CitiesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Cities
         fields = "__all__"
+
+
+
+
 

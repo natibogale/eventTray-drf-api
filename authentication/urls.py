@@ -22,6 +22,7 @@ urlpatterns = [
 
 
     path("api/organizer/event/",include('events.urls')),
+    path("api/user/event/",include('events.urls')),
 
 
 

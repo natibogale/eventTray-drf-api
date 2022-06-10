@@ -187,8 +187,8 @@ class Images(models.Model):
         if filesize > megabyte_limit * 1024 * 1024:
             raise ValidationError("Max file size is %sMB" % str(megabyte_limit))
 
-    event = models.ForeignKey(Events, on_delete=models.CASCADE, related_name="Event")
-    image = models.ImageField(upload_to="Event_Images/", validators=[validate_image])
+    event = models.ForeignKey(Events, verbose_name="Event" ,on_delete=models.CASCADE, related_name="images")
+    image = models.ImageField(verbose_name="Image", upload_to="Event_Images/")
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
 
     # resizing the image, you can change parameters like size and quality.
