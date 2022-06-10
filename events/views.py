@@ -22,15 +22,7 @@ def createEventView(request):
 
     if request.method == "POST":
         form = createEventForm(request.POST)
-        print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',request.POST['eventStartDate'], request.POST['eventEndDate'])
-        if request.POST['eventStartDate'] > request.POST['eventEndDate']:
-            print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
-            messages.error(request, f'An event cannot end before its start date!',extra_tags="danger")
-            context={
-                "form":form,
-                "categories": categories,
-            }
-            return render(request, 'events/create_event.html',context)
+ 
 
         if form.is_valid():
             print('ffffffffffffffffffffffffffffffffffffff',request.POST)
@@ -132,10 +124,6 @@ def eventsDetailView(request, id):
         form = updateEventForm(request.POST or None,request.FILES or None, instance=obj)
         # form2 = ImagesForm(request.POST or None, instance=img)
         if request.method=="POST":
-            if request.POST['eventStartDate'] > request.POST['eventEndDate']:
-                print('kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
-                messages.error(request, f'An event cannot end before its start date!',extra_tags="danger")
-                return redirect('event-details',obj.id)
 
             if form.is_valid():
                 event = form.save(commit=False)

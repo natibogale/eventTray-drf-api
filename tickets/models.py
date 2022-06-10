@@ -16,6 +16,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 class Tickets(models.Model):
+    ticketOwner =  models.ForeignKey("authentication.User", verbose_name="Ticket Owner", on_delete=models.CASCADE) 
     event  = models.ForeignKey("events.Events", verbose_name="Event", on_delete=models.CASCADE)    
     ticketName  = models.CharField(max_length = 150, verbose_name="Ticket Name")
     ticketDescription = models.TextField(verbose_name="Ticket Description",blank=True, null=True)

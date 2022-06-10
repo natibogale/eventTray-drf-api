@@ -23,6 +23,7 @@ urlpatterns = [
 
     path("api/organizer/event/",include('events.urls')),
     path("api/user/event/",include('events.urls')),
+    path("api/organizer/event/ticket/",include('tickets.urls')),
 
 
 
