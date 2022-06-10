@@ -49,8 +49,8 @@ import threading
 
 
 
-@authentication_classes([])
-@permission_classes([permissions.AllowAny])
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
 class EventsListView(GenericAPIView):
     serializer_class = EventSerializer
 
@@ -58,23 +58,23 @@ class EventsListView(GenericAPIView):
         try:
             user = request.user
             id=request.GET.get("id")
-            events = Events.objects.filter(id=id)
-            if events:
-                serializer_class = EventSerializer(events, many=True)
-                return Response(
-                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+            events = Events.objects.get(id=id)
+            serializer_class = EventSerializer(events)
+            return Response(
+                {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
 
-                )
+            )
+
         except Exception as e:
             user = request.user
             events = Events.objects.all()
-            if events:
-                serializer_class = EventSerializer(events, many=True)
-                return Response(
-                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
-
-                )
-        else:
+            serializer_class = EventSerializer(events, many=True)
             return Response(
-                {"status": "error", "message": "No Events Found"}, status=status.HTTP_404_NOT_FOUND
-            )  
+                {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+            )
+
+
+        return Response(
+            {"status": "error", "message": "No Events Found"}, status=status.HTTP_404_NOT_FOUND
+        )  
