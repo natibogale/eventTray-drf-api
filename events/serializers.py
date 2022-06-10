@@ -35,7 +35,7 @@ class eventImagesSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 class EventSerializer(serializers.ModelSerializer):
-    eventCategories = serializers.MultipleChoiceField(choices=CATEGORIES)
+    eventCategories = serializers.ChoiceField(choices=CATEGORIES)
     images = eventImagesSerializer(many=True, read_only=True)
 
     class Meta:

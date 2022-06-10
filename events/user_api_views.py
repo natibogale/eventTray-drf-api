@@ -51,20 +51,30 @@ import threading
 
 @authentication_classes([])
 @permission_classes([permissions.AllowAny])
-class CitiesListView(GenericAPIView):
-    serializer_class = CitiesSerializer
+class EventsListView(GenericAPIView):
+    serializer_class = EventSerializer
 
     def get(self, request):
-        user = request.user
-        serializer_class = CitiesSerializer
-        cities = Cities.objects.all()
-        if cities:
-            serializer_class = CitiesSerializer(cities, many=True)
-            return Response(
-                {"status": "success", "cities":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+        try:
+            user = request.user
+            id=request.GET.get("id")
+            events = Events.objects.filter(id=id)
+            if events:
+                serializer_class = EventSerializer(events, many=True)
+                return Response(
+                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
 
-            )
+                )
+        except Exception as e:
+            user = request.user
+            events = Events.objects.filter()
+            if events:
+                serializer_class = EventSerializer(events, many=True)
+                return Response(
+                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+                )
         else:
             return Response(
-                {"status": "error", "message": "No Cities Found"}, status=status.HTTP_404_NOT_FOUND
+                {"status": "error", "message": "No Events Found"}, status=status.HTTP_404_NOT_FOUND
             )  

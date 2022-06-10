@@ -27,8 +27,7 @@
 <!-- <link rel="stylesheet" href="{% static 'assets/css/demo.css' %}"> -->
 <script src='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js'></script>
 <link href='https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css' rel='stylesheet' />
-<script
-	src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
+<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.js"></script>
 <link rel="stylesheet"
 	href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.1.0/mapbox-gl-directions.css"
 	type="text/css" />
@@ -37,7 +36,8 @@
 	.mapbox-directions-profile,
 	.directions-icon,
 	.mapbox-directions-route-summary,
-	.mapbox-directions-steps , ul{
+	.mapbox-directions-steps,
+	ul {
 		display: none;
 	}
 
@@ -99,40 +99,44 @@
 								</div>
 								<div class="card-body">
 									<!-- {{ form|crispy }} -->
+									
+
 									<form action="" method="POST">
 										{% csrf_token %}
-										{{ form.media }}
+										<!-- {{ form.media }} -->
 
 
 
-										{{ form }}
+										{% bootstrap_form form %}
+
+								
 
 										<!-- <input type="text" required class="readonly"  placeholder="Choose location on map" autocomplete="off" id="location" name="eventLocation"> -->
 										<!-- <span class="mt-3">Venue:</span> -->
 
 										<!-- <input type="text" class="form-control" autocomplete="off" name="venue" list="selectVenue" /> -->
-										<datalist  style="color: black; background-color: white;" id="selectVenue">
+										<datalist style="color: black; background-color: white;" id="selectVenue">
 
 											{% for venue in venues %}
-										
+
 											<option value="{{venue}}">{{venue}}</option>
 
 											{% endfor %}
 
 										</datalist>
 										<div class="mt-2" id='map'></div>
-									
-									
 
 
 
 
 
-										<input type="submit" name="submit" onclick="getLocation()" class="btn btn-info mt-2"
-											style="float: right; " value="Done" id="">
+
+
+										<input type="submit" name="submit" onclick="getLocation()"
+											class="btn btn-info mt-2" style="float: right; " value="Done" id="">
 									</form>
 
-								
+
 								</div>
 							</div>
 						</div>
@@ -159,6 +163,22 @@
 			var val = document.getElementById("poi").value;
 			alert(val);
 
+		}
+
+		function getSelectValues() {
+			var select = document.getElementById("select-categories-type");
+			var result = [];
+			var options = select && select.options;
+			var opt;
+
+			for (var i = 0, iLen = options.length; i < iLen; i++) {
+				opt = options[i];
+
+				if (opt.selected) {
+					result.push(opt.value || opt.text);
+				}
+			}
+			return result;
 		}
 	</script>
 	<!--   Core JS Files   -->

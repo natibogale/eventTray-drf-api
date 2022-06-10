@@ -102,7 +102,7 @@
                                         <form action="" method="POST">
                                             {% csrf_token %}
 											{{ form.media }}
-                                            {{ form }}
+											{% bootstrap_form form %}
 
 											<datalist  style="color: black; background-color: white;" id="selectVenue">
 

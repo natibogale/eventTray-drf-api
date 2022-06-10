@@ -57,7 +57,7 @@ def createEventView(request):
                 messages.success(request, f"Event created successfully.",extra_tags="success")
                 return redirect('events-list')
             else:
-                messages.error(request, f"Internal error occured! Tru again in a few.",extra_tags="danger")
+                messages.error(request, f"Internal error occured! Try again in a few.",extra_tags="danger")
 
         else:
             context={
@@ -65,13 +65,13 @@ def createEventView(request):
                 "categories": categories,
             }
             return render(request, 'events/create_event.html',context)
-
-    form = createEventForm()
-    context = {
-        "categories": categories,
-        "form":form,
-    }
-    return render(request, 'events/create_event.html',context)
+    else:
+        form = createEventForm()
+        context = {
+            "categories": categories,
+            "form":form,
+        }
+        return render(request, 'events/create_event.html',context)
 
 
 

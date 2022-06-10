@@ -12,7 +12,7 @@ urlpatterns = [
     path("event-images/", OrganizerEventImagesView.as_view(), name="event-images-view"),
 
 
-    path("list-published/", OrganizerEventImagesView.as_view(), name="event-images-view"),
+    path("list-published/", EventsListView.as_view(), name="event-list-view-user"),
 
 
 

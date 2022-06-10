@@ -116,7 +116,7 @@ class Events(models.Model):
     # eventCategory = models.
     payment = models.CharField(choices=PAID, verbose_name="Payment", max_length=50)
 
-    eventCategories = MultiSelectField(
+    eventCategories = models.CharField(
         choices=CATEGORIES,
         max_length=500,
         verbose_name="Event Category",

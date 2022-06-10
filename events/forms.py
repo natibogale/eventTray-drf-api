@@ -6,6 +6,7 @@ from django.forms import ModelForm, TextInput, EmailField
 from authentication.models import *
 from ckeditor.widgets import CKEditorWidget
 
+from datetime import datetime,date
 
 class DateInput(forms.DateInput):
     input_type = "date"
@@ -62,6 +63,8 @@ class createEventForm(forms.ModelForm):
             # "eventDescription": CKEditorWidget(),
             # "eventLocation" : TextInput(attrs={'id':'location', 'class':'readonly', 'placeholder':'Choose location from map', 'autocomplete':'off'}),
             # "venue":forms.HiddenInput(),
+
+            
         }
  
     
@@ -70,14 +73,18 @@ class createEventForm(forms.ModelForm):
     #     self.fields['directorate'].required = True
     #     self.fields['team'].required = True
 
-
-    def clean_eventEndDate(self):
-        startDate = self.cleaned_data['eventStartDate']
-        endDate = self.cleaned_data['eventEndDate']
+    def clean(self):
+        # Get the user submitted names from the cleaned_data dictionary
+        cleaned_data = super().clean()
+        startDate = cleaned_data.get('eventStartDate')
+        endDate = cleaned_data.get('eventEndDate')
         if endDate < startDate:
             raise forms.ValidationError("An Event cannot end before it's start date!")
             
-        return endDate
+        if startDate < date.today():
+            raise ValidationError("Start Date cannot be in the past")  
+
+        return cleaned_data
 
     # def clean_eventEndTime(self):
     #     startTime = self.cleaned_data['eventStartTime']
@@ -97,7 +104,6 @@ class ImagesForm(forms.ModelForm):
 
 
 class updateEventForm(forms.ModelForm):
-
 
     eventStartDate = forms.DateField(label = "Event Starts on",
         widget=forms.DateInput(attrs={ "type": "date", 'class':'mt-2'})
@@ -151,10 +157,15 @@ class updateEventForm(forms.ModelForm):
     #     self.fields['team'].required = True
 
 
-    def clean_eventEndDate(self):
-        startDate = self.cleaned_data['eventStartDate']
-        endDate = self.cleaned_data['eventEndDate']
+    def clean(self):
+        # Get the user submitted names from the cleaned_data dictionary
+        cleaned_data = super().clean()
+        startDate = cleaned_data.get('eventStartDate')
+        endDate = cleaned_data.get('eventEndDate')
         if endDate < startDate:
             raise forms.ValidationError("An Event cannot end before it's start date!")
             
-        return endDate
+        if startDate < date.today():
+            raise ValidationError("Start Date cannot be in the past")  
+                      
+        return cleaned_data
