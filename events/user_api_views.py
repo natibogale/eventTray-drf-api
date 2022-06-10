@@ -49,8 +49,8 @@ import threading
 
 
 
-@authentication_classes([JWTAuthentication])
-@permission_classes([permissions.IsAuthenticated])
+@authentication_classes([])
+@permission_classes([permissions.AllowAny])
 class EventsListView(GenericAPIView):
     serializer_class = EventSerializer
 
