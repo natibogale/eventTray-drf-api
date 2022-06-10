@@ -67,7 +67,7 @@ class EventsListView(GenericAPIView):
                 )
         except Exception as e:
             user = request.user
-            events = Events.objects.filter()
+            events = Events.objects.all()
             if events:
                 serializer_class = EventSerializer(events, many=True)
                 return Response(
