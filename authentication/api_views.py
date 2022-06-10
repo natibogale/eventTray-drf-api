@@ -2,7 +2,7 @@
 from django.shortcuts import render
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from .models import User
+from authentication.models import User
 from .serializers import *
 from icecream import ic
 from django.contrib.auth import *
@@ -27,8 +27,8 @@ from django.db.models import Q
 from rest_framework.generics import *
 from django.conf import settings
 import requests
-from .jwt import *
-from .permissions import IsEventOrganizer
+from authentication.jwt import *
+from authentication.permissions import IsEventOrganizer
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
@@ -83,10 +83,10 @@ class generateKey:
 
 
 @authentication_classes([])
+@permission_classes([permissions.AllowAny])
 class UserRegisterView(GenericAPIView):
-    permission_classes = [permissions.AllowAny]
     serializer_class = UserRegisterSerializer
-    
+
     def post(self, request):
 
         hashed = make_password(request.data["password"])
@@ -110,7 +110,7 @@ class UserRegisterView(GenericAPIView):
                     {"status": "error", "message": "Username already exists"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-                raise serializers.ValidationError("This User already exists")
+                raise serializer_class.ValidationError("This User already exists")
         except:
             pass
 
@@ -122,7 +122,7 @@ class UserRegisterView(GenericAPIView):
                     {"status": "error", "message": "User already exists"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-                raise serializers.ValidationError("This User already exists")
+                raise serializer_class.ValidationError("This User already exists")
         except:
             pass
 
@@ -238,6 +238,7 @@ class SendOtp(GenericAPIView):
 @permission_classes([permissions.AllowAny])
 
 class VerifyOTP(GenericAPIView):
+    serializer_class = Loginserializer
 
     def post(self, request):
         try:
@@ -264,12 +265,12 @@ class VerifyOTP(GenericAPIView):
             user.is_authenticated = True
             user.save()
             if us:
-                serializer = Loginserializer(us)
+                serializer_class = Loginserializer(us)
                 return Response(
                     {
                         "status": "success",
                         "message": "Successfully logged in",
-                        "data": serializer.data,
+                        "data": serializer_class.data,
                     },
                     status=status.HTTP_202_ACCEPTED,
                 )
@@ -283,12 +284,14 @@ class VerifyOTP(GenericAPIView):
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 class UserProfileView(GenericAPIView):
+    serializer_class = UserProfileSerializer
+
     def get(self, request):
         user = request.user
         print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',user)
-        serializer = UserProfileSerializer(user)
+        serializer_class = UserProfileSerializer(user)
         return Response(
-            {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
+            {"status": "success", "user": serializer_class.data}, status=status.HTTP_200_OK
         )
 
     def put(self, request):
@@ -306,23 +309,19 @@ class UserProfileView(GenericAPIView):
             return Response({"status":"error", "message": serializer_class.errors},status=status.HTTP_400_BAD_REQUEST)
 
 
-
-
-
-
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
-
 class UserOrganizerProfileView(GenericAPIView):
+    serializer_class = OrganizerProfileSerializer
 
     def get(self, request):
         username = request.GET.get('username')
         user = request.user
         try:
             organizer = User.objects.get(username=username)
-            serializer = OrganizerProfileSerializer(organizer)
+            serializer_class = OrganizerProfileSerializer(organizer)
             return Response(
-                {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
+                {"status": "success", "user": serializer_class.data}, status=status.HTTP_200_OK
             )
         except Exception as e:
             return Response(
@@ -336,15 +335,16 @@ class UserOrganizerProfileView(GenericAPIView):
 @permission_classes([permissions.IsAuthenticated])
 
 class UserOrganizerListView(GenericAPIView):
+    serializer_class = OrganizerProfileSerializer
 
     def get(self, request):
         user = request.user
         try:
             organizers = User.objects.filter(is_active=True)
 
-            serializer = OrganizerProfileSerializer(organizers, many=True)
+            serializer_class = OrganizerProfileSerializer(organizers, many=True)
             return Response(
-                {"status": "success", "users": serializer.data}, status=status.HTTP_200_OK
+                {"status": "success", "users": serializer_class.data}, status=status.HTTP_200_OK
             )
         except Exception as e:
             return Response(
@@ -359,27 +359,28 @@ class UserOrganizerListView(GenericAPIView):
 
 class OrganizerProfileView(GenericAPIView):
     parser_classes = (MultiPartParser, FormParser)
+    serializer_class = OrganizerProfileSerializer
 
     def get(self, request):
         user = request.user
-        serializer = OrganizerProfileSerializer(user)
+        serializer_class = OrganizerProfileSerializer(user)
         return Response(
-            {"status": "success", "user": serializer.data}, status=status.HTTP_200_OK
+            {"status": "success", "user": serializer_class.data}, status=status.HTTP_200_OK
         )
 
 
     def put(self, request):
         user = request.user
-        serializer = OrganizerProfileSerializer(user, data=request.data ) 
+        serializer_class = OrganizerProfileSerializer(user, data=request.data ) 
 
-        if serializer.is_valid():
-            serializer.save()
+        if serializer_class.is_valid():
+            serializer_class.save()
 
             return Response(
-            {"status": "success","message":"Profile Updated successfully!", "user": serializer.data}, status=status.HTTP_200_OK
+            {"status": "success","message":"Profile Updated successfully!", "user": serializer_class.data}, status=status.HTTP_200_OK
             )
         else:
-            return Response({"status":"error", "message": serializer.errors},status=status.HTTP_400_BAD_REQUEST)
+            return Response({"status":"error", "message": serializer_class.errors},status=status.HTTP_400_BAD_REQUEST)
 
 
 
@@ -388,6 +389,7 @@ class OrganizerProfileView(GenericAPIView):
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 class OrganizerDetailView(GenericAPIView):
+    serializer_class = OrganizerDetailSerializer
 
     def post(self, request):
         user = request.user
