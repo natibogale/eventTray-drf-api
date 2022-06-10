@@ -38,3 +38,8 @@ class EventSerializer(serializers.ModelSerializer):
 
 
 
+class CitiesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Cities
+        fields = "__all__"
+

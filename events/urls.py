@@ -8,6 +8,7 @@ from events.user_api_views import *
 
 urlpatterns = [
     path("create/", OrganizerEventsView.as_view(), name="event-api-view"),
+    path("cities/", CitiesListView.as_view(), name="event-cities-view"),
 
 
 

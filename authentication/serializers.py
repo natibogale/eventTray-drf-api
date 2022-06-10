@@ -38,6 +38,7 @@ class Loginserializer(serializers.ModelSerializer):
 
 
 
+
 class OrganizerDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Organizer

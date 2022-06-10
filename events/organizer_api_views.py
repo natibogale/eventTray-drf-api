@@ -52,6 +52,7 @@ import threading
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 class OrganizerEventsView(GenericAPIView):
+    serializer_class = EventSerializer
 
     def post(self, request):
         user = request.user
@@ -67,3 +68,29 @@ class OrganizerEventsView(GenericAPIView):
             return Response(
                 {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
             )   
+
+
+
+
+
+
+
+@authentication_classes([])
+@permission_classes([permissions.AllowAny])
+class CitiesListView(GenericAPIView):
+    serializer_class = CitiesSerializer
+
+    def get(self, request):
+        user = request.user
+        serializer_class = CitiesSerializer
+        cities = Cities.objects.all()
+        if cities:
+            serializer_class = CitiesSerializer(cities, many=True)
+            return Response(
+                {"status": "success", "cities":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+            )
+        else:
+            return Response(
+                {"status": "error", "message": "No Cities Found"}, status=status.HTTP_404_NOT_FOUND
+            )  
