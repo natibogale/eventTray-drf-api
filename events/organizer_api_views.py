@@ -67,7 +67,47 @@ class OrganizerEventsView(GenericAPIView):
         else:
             return Response(
                 {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
-            )   
+            ) 
+
+
+    def put(self, request):
+        user = request.user
+        eventId = request.data['id']
+        event = Events.objects.get(id=eventId)
+        serializer_class = EventSerializer(event, data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(
+                {"status": "success", "message":"Event Updated successfully!","event":serializer_class.data}, status=status.HTTP_201_CREATED
+            )
+        else:
+            return Response(
+                {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
+            ) 
+
+
+    def get(self, request):
+        user = request.user
+        try:
+            eventId = request.GET.get('id')
+            event = Events.objects.get(id=eventId,)
+            serializer_class = EventSerializer(event)
+
+            return Response(
+                {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
+            )
+        except Exception as e:
+            event = Events.objects.all()
+            serializer_class = EventSerializer(event,many=True)
+            return Response(
+                {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
+            )
+        
+        return Response(
+            {"status": "error", "message": "Events Not Found"}, status=status.HTTP_404_NOT_FOUND
+        )  
+
+
 
 
 
