@@ -66,8 +66,52 @@ class EventsListView(GenericAPIView):
             )
 
         except Exception as e:
+            try:
+                user = request.user
+                searchBy=request.GET.get("searchBy")
+                events = Events.objects.filter((Q(is_published=True) & Q(is_cancelled = False)) & Q(eventDescription__icontains=searchBy) | Q(eventCategories__icontains=searchBy)| Q(venue__icontains=searchBy) )
+                serializer_class = EventSerializer(events, many=True)
+                return Response(
+                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+                )
+            except Exception as e:
+                user = request.user
+                events = Events.objects.filter(is_published=True, is_cancelled = False)
+                serializer_class = EventSerializer(events, many=True)
+                return Response(
+                    {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+                )
+
+        return Response(
+            {"status": "error", "message": "No Events Found"}, status=status.HTTP_404_NOT_FOUND
+        )  
+
+
+
+
+
+
+@authentication_classes([])
+@permission_classes([permissions.AllowAny])
+class EventsSearchView(GenericAPIView):
+    serializer_class = EventSerializer
+
+    def get(self, request):
+        try:
             user = request.user
-            events = Events.objects.all()
+            searchBy=request.GET.get("searchBy")
+            events = Events.objects.filter(is_published=True, is_cancelled = False, eventDescription__icontains=searchBy, eventCategories__icontains=searchBy, venue__icontains=searchBy )
+            serializer_class = EventSerializer(events, many=True)
+            return Response(
+                {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
+
+            )
+
+        except Exception as e:
+            user = request.user
+            events = Events.objects.filter(is_published=True, is_cancelled = False)
             serializer_class = EventSerializer(events, many=True)
             return Response(
                 {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED

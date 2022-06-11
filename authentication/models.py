@@ -240,20 +240,14 @@ class Organizer(models.Model):
         null=True,
     )
     verifiedOrganizer = models.BooleanField(default=False)
-    totalVisitors = models.CharField(
-        verbose_name="Total Visitors", blank=True, null=True, default=0, max_length=150
-    )
-    dailyVisitors = models.CharField(
-        verbose_name="Daily Visitors", blank=True, null=True, default=0, max_length=150
-    )
     followers = models.CharField(
         verbose_name="Followers", blank=True, null=True, default=0, max_length=150
     )
     rating = models.CharField(
         verbose_name="Rating", blank=True, null=True, default=0, max_length=150
     )
-    events = models.CharField(
-        verbose_name="Total Events", blank=True, null=True, default=0, max_length=150
+    totalEvents = models.PositiveIntegerField(
+        verbose_name="Total Events",  default=0, blank=True, null=True
     )
     sales = models.CharField(
         verbose_name="Total Sales", blank=True, null=True, default=0, max_length=150

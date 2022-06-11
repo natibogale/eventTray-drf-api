@@ -112,9 +112,13 @@ class OrganizerEventsView(GenericAPIView):
     def patch(self, request):
         user = request.user
         eventId = request.data['id']
+        organizer = request.data['organizer']
         event = Events.objects.get(id=eventId)
-        tickets = Tickets.objects.filter(event=eventId)
         images = Images.objects.filter(event=eventId)
+
+        organizerHosted = Organizer.objects.get(organizer=organizer)
+        organizerHosted.totalEvents += 1
+        organizerHosted.save()
 
         serializer_class = EventSerializer(event, data=request.data,partial=True)
         if serializer_class.is_valid():
