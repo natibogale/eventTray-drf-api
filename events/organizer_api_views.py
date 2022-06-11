@@ -139,8 +139,6 @@ class CitiesListView(GenericAPIView):
 
 
 
-
-
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
 class OrganizerEventImagesView(GenericAPIView):
@@ -173,6 +171,26 @@ class OrganizerEventImagesView(GenericAPIView):
             return Response(
                 {"status": "success", "message":"Image updated successfully!","image":serializer_class.data}, status=status.HTTP_201_CREATED
 
+            )
+        else:
+            return Response(
+                {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
+            ) 
+
+
+
+
+
+
+    def put(self, request):
+        user = request.user
+        eventId = request.data['id']
+        event = Events.objects.get(id=eventId)
+        serializer_class = EventSerializer(event, data=request.data)
+        if serializer_class.is_valid():
+            serializer_class.save()
+            return Response(
+                {"status": "success", "message":"Event Updated successfully!","event":serializer_class.data}, status=status.HTTP_201_CREATED
             )
         else:
             return Response(

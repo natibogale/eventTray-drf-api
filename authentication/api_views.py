@@ -393,8 +393,9 @@ class OrganizerDetailView(GenericAPIView):
 
     def post(self, request):
         user = request.user
-        details = Organizer.objects.filter(organizer=organizer)
-
+        organizer = request.data['organizer']
+        details = Organizer.objects.get(organizer=organizer)
+        
         serializer_class = OrganizerDetailSerializer(data=request.data)
         if serializer_class.is_valid():
             serializer_class.save()
