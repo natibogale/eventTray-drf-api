@@ -32,7 +32,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
 from .forms import *
-
+from tickets.models import *
 from django.shortcuts import (
     HttpResponseRedirect,
     get_object_or_404,
@@ -109,7 +109,28 @@ class OrganizerEventsView(GenericAPIView):
 
 
 
+    def patch(self, request):
+        user = request.user
+        eventId = request.data['id']
+        event = Events.objects.get(id=eventId)
+        tickets = Tickets.objects.filter(event=eventId)
+        images = Images.objects.filter(event=eventId)
 
+        serializer_class = EventSerializer(event, data=request.data,partial=True)
+        if serializer_class.is_valid():
+            if images:
+                serializer_class.save()
+                return Response(
+                    {"status": "success", "message":"Event published successfully!","event":serializer_class.data}, status=status.HTTP_201_CREATED
+                )
+            else:
+                return Response(
+                    {"status": "error", "message":"Atleast One Image needed to publish Event!","event":serializer_class.data}, status=status.HTTP_201_CREATED
+                )
+        else:
+            return Response(
+                {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
+            ) 
 
 
 
