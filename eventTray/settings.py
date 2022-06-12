@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     "events",
     "organizer",
     "tickets",
+    "notifications",
     "ckeditor",
     "crispy_forms",
     "dj_static",

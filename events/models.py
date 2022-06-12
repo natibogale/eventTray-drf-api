@@ -158,6 +158,7 @@ class Events(models.Model):
     eventCountry = models.CharField(
         verbose_name="Event Country", default="Ethiopia", max_length=250
     )
+    eventWallet = models.PositiveIntegerField(default=0)
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
     is_published = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)
