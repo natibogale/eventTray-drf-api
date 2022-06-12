@@ -8,6 +8,7 @@ from django.contrib.auth import *
 from collections import namedtuple
 import json
 from rest_framework.parsers import MultiPartParser, FormParser
+from django.forms.models import model_to_dict
 
 # from rest_framework.serializers import *
 # from rest_framework import serializers
@@ -92,13 +93,36 @@ class OrganizerEventsView(GenericAPIView):
             eventId = request.GET.get('id')
             event = Events.objects.get(id=eventId,organizer=user)
             serializer_class = EventSerializer(event)
-
+       
+            withoutImage = serializer_class.data
+            try:
+                image = Images.objects.get(event=eventId)
+                image = str(image.image)
+            except Exception as e:
+                image=""
+            withoutImage['image'] = image
+           
             return Response(
-                {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
+                {"status": "success","event": withoutImage}, status=status.HTTP_200_OK
             )
         except Exception as e:
             event = Events.objects.filter(organizer=user)
+            for ev in event:
+                
+                try:
+                    image = Images.objects.get(event=ev.id)
+                    image = str(image.image)
+
+                except Exception as e:
+                    image=""
+
+                ev.image = image
+
+                  
+
+                
             serializer_class = EventSerializer(event,many=True)
+
             return Response(
                 {"status": "success","event":serializer_class.data}, status=status.HTTP_200_OK
             )

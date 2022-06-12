@@ -34,3 +34,17 @@ class Tickets(models.Model):
     def __str__(self):
         return self.ticketName
 
+
+
+
+
+
+class TicketsBought (models.Model):
+
+    event = models.ForeignKey("events.Events", verbose_name=("Event"), on_delete=models.CASCADE)
+    
+    class Meta:
+        verbose_name_plural = ("Tickets Bought")
+
+    def __str__(self):
+        return self.name

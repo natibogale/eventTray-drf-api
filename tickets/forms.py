@@ -24,15 +24,16 @@ class TimeInput(forms.TextInput):
 
 
 class createEventTicketForm(forms.ModelForm):
-    # def clean(self):
-    #     # Get the user submitted names from the cleaned_data dictionary
-    #     cleaned_data = super().clean()
-    #     event = cleaned_data.get("event")
-    #     ticketName = cleaned_data.get("ticketName")
-    #     ticketName = cleaned_data.get("ticketName")
-    #     ticketName = cleaned_data.get("ticketName")
-    #     ticketName = cleaned_data.get("ticketName")
-    #     ticketName = cleaned_data.get("ticketName")
+    def clean(self):
+        # Get the user submitted names from the cleaned_data dictionary
+        cleaned_data = super().clean()
+        
+        event = cleaned_data.get("event")
+        ticketName = cleaned_data.get("ticketName")
+        ticketName = cleaned_data.get("ticketName")
+        ticketName = cleaned_data.get("ticketName")
+        ticketName = cleaned_data.get("ticketName")
+        ticketName = cleaned_data.get("ticketName")
 
 
     #     last_name = cleaned_data.get("last_name")

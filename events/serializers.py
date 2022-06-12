@@ -32,12 +32,10 @@ CATEGORIES = (
 class eventImagesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Images
-        fields = "__all__"
+        fields ="__all__"
 
 class EventSerializer(serializers.ModelSerializer):
     eventCategories = serializers.ChoiceField(choices=CATEGORIES)
-    images = eventImagesSerializer(many=True, read_only=True)
-
     class Meta:
         model = Events
         fields = "__all__"

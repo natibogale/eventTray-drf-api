@@ -142,6 +142,7 @@ class Events(models.Model):
         blank=True,
         null=True,
     )
+    image = models.CharField(verbose_name="Event Image", max_length=250,null=True,blank=True)
 
     status = models.CharField(verbose_name="Status", default="Upcoming", max_length=250)
     eventType = models.CharField(

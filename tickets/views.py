@@ -17,7 +17,9 @@ def createTicketView(request):
     if request.method == "POST":
         form=createEventTicketForm(request.user,request.POST)
         if form.is_valid():
-            form.save()
+            owner = form.save(commit=False)
+            owner.ticketOwner = request.user
+            owner.save()
             messages.success(request, f'New Ticket has been added to your event', extra_tags="success")
             return redirect('create-ticket')
         
