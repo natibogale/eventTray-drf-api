@@ -56,7 +56,7 @@ import threading
 
 @authentication_classes([JWTAuthentication])
 @permission_classes([permissions.IsAuthenticated])
-class OrganizerEventImagesView(GenericAPIView):
+class OrganizerEventTicketsView(GenericAPIView):
     serializer_class = eventTicketSerializer
 
     def post(self, request):
@@ -98,6 +98,9 @@ class OrganizerEventImagesView(GenericAPIView):
         try:
             ticketId = request.GET.get('id')
             ticket = Tickets.objects.get(id=ticketId, ticketOwner=user)
+            evenet = Events.objects.get(id=ticket.event.id)
+            ticket.eventName = evenet.eventName
+            ticket.save()
             serializer_class = eventTicketSerializer(ticket)
 
             return Response(
@@ -105,6 +108,11 @@ class OrganizerEventImagesView(GenericAPIView):
             )
         except Exception as e:
             ticket = Tickets.objects.filter(ticketOwner=user)
+            for tk in ticket:
+                evenet = Events.objects.get(id=tk.event.id)
+                tk.eventName = evenet.eventName
+                tk.save()
+        
             serializer_class = eventTicketSerializer(ticket,many=True)
             return Response(
                 {"status": "success","ticket":serializer_class.data}, status=status.HTTP_200_OK

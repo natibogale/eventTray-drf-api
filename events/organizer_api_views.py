@@ -117,8 +117,10 @@ class OrganizerEventsView(GenericAPIView):
                     image=""
                 if image:
                     ev.image = "/media/"+image
+                    ev.save()
                 else:
                     ev.image = image
+                    
                   
 
                 

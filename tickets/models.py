@@ -18,6 +18,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 class Tickets(models.Model):
     ticketOwner =  models.ForeignKey("authentication.User", verbose_name="Ticket Owner", on_delete=models.CASCADE) 
     event  = models.ForeignKey("events.Events", verbose_name="Event", on_delete=models.CASCADE)    
+    eventName = models.CharField(max_length=100, verbose_name="Event Name", blank=True, null=True)
     ticketName  = models.CharField(max_length = 150, verbose_name="Ticket Name")
     ticketDescription = models.TextField(verbose_name="Ticket Description",blank=True, null=True)
     quantity = models.PositiveIntegerField(verbose_name="Quantity")
@@ -40,11 +41,35 @@ class Tickets(models.Model):
 
 
 class TicketsBought (models.Model):
-
+    ticket = models.ForeignKey("tickets.Tickets", verbose_name="Ticket", on_delete=models.CASCADE)
+    ticketName = models.CharField(max_length=100, verbose_name="Ticket Name", blank=True, null=True)
     event = models.ForeignKey("events.Events", verbose_name=("Event"), on_delete=models.CASCADE)
-    
+    eventName = models.CharField(max_length=100, verbose_name="Event Name", blank=True, null=True)
+    phoneNumber = models.CharField(verbose_name=("Buyer Phone"), max_length=50)
+    orderNo = models.CharField(verbose_name=("Order Number"), max_length=50)
+    buyer = models.ForeignKey("authentication.User", verbose_name=("Buyer"), on_delete=models.CASCADE)
+    buyerName = models.CharField(verbose_name=("Buyer Name"), blank=True, null=True, max_length=50)
+    qrCode = models.CharField(verbose_name=("QR Code"), max_length=50)
+    price = models.CharField(verbose_name=("Price"), max_length=50, blank=True, null=True)
+    is_payed = models.BooleanField(default=False)
+    is_scanned = models.BooleanField(default=False)
+    datePuchased = models.DateField(auto_now=False, auto_now_add=True, verbose_name="Date Purchased") 
     class Meta:
         verbose_name_plural = ("Tickets Bought")
 
     def __str__(self):
-        return self.name
+        return self.orderNo
+
+
+
+# class TicketHistory(models.Model):
+#     orderNo = models.CharField(verbose_name=("Order Number"), max_length=50)
+#     phoneNumber = models.CharField(verbose_name=("Buyer Phone"), max_length=50)
+#     quantity = models.PositiveIntegerField(verbose_name="Quantity")
+
+
+#     class Meta:
+#         verbose_name_plural = ("Tickets History")
+
+#     def __str__(self):
+#         return self.orderNo
