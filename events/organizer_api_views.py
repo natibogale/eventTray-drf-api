@@ -100,7 +100,7 @@ class OrganizerEventsView(GenericAPIView):
                 image = str(image.image)
             except Exception as e:
                 image=""
-            withoutImage['image'] = image
+            withoutImage['image'] = "/media/"+image
            
             return Response(
                 {"status": "success","event": withoutImage}, status=status.HTTP_200_OK
@@ -115,9 +115,10 @@ class OrganizerEventsView(GenericAPIView):
 
                 except Exception as e:
                     image=""
-
-                ev.image = image
-
+                if image:
+                    ev.image = "/media/"+image
+                else:
+                    ev.image = image
                   
 
                 
