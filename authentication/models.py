@@ -253,6 +253,9 @@ class Organizer(models.Model):
         verbose_name="Total Sales", blank=True, null=True, default=0, max_length=150
     )
   
+    wallet = models.CharField(
+        verbose_name="Wallet", blank=True, null=True, default=0, max_length=150
+    )
 
     class Meta:
         verbose_name_plural = "Organizer Details"

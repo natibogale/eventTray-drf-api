@@ -86,14 +86,19 @@ def confirmPayment():
                 message = recentSentMessage.message
                 orderNo = message[message.find("is")+3:message.find(". Your tickets")]
                 if orderNo:
+
                     boughtTickets = TicketsBought.objects.filter(orderNo=orderNo,is_payed=False,is_scanned=False)
                     try:
-                        totalPrice = int(boughtTickets[0].price) * int(boughtTickets[0].quantity)
-                        print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq',int(amount), int(totalPrice))
+                        price = int(boughtTickets[0].price)
+                        quantity = int(boughtTickets[0].quantity)
+                        totalPrice = price*quantity
+                        amount = int(float(amount))
 
-                        if int(amount) == int(totalPrice):
-                            
+                        totalPrice = int(totalPrice)
+
+                        if amount == totalPrice: 
                             for ticket in boughtTickets:
+                                
                                 ticket.is_payed = True
                                 ticket.save()
                     except:
