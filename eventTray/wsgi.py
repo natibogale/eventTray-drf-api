@@ -96,9 +96,8 @@ def confirmPayment():
 
                         totalPrice = int(totalPrice)
 
-                        if amount == totalPrice: 
+                        if amount >= totalPrice: 
                             for ticket in boughtTickets:
-                                
                                 ticket.is_payed = True
                                 ticket.save()
                     except:
