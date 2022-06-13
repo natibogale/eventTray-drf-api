@@ -8,6 +8,20 @@ from ckeditor.widgets import CKEditorWidget
 
 from datetime import datetime,date
 
+CITIES=(
+    ("Addis Ababa","Addis Ababa"),
+    ("Adama","Adama"),
+    ("Mekelle","Mekelle"),
+    ("BahirDar","BahirDar"),
+    ("Jimma","Jimma"),
+    ("Hawassa","Hawassa"),
+    ("Arba Minch","Arba Minch"),
+    ("Bishoftu","Bishoftu"),
+    ("Harar","Harar"),
+    ("Gambella","Gambella"),
+    
+    
+)
 class DateInput(forms.DateInput):
     input_type = "date"
 
@@ -18,7 +32,7 @@ class TimeInput(forms.TextInput):
 
 class createEventForm(forms.ModelForm):
 
-
+    eventCity = forms.ChoiceField(choices=CITIES)
     eventStartDate = forms.DateField(label = "Event Starts on",
         widget=forms.DateInput(attrs={ "type": "date", 'class':'mt-2'})
     )

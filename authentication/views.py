@@ -84,7 +84,7 @@ def verifyOtp(request):
 
             # timestamp = json.loads(date_time_obj, object_hook=customDecoder)
 
-            print("ttttttttttttttttttttttttttttttttttttttt", date_time_obj[15:16])
+            # print("ttttttttttttttttttttttttttttttttttttttt", date_time_obj[15:16])
 
             # timestamp  = datetime.strptime(date_time_obj, '%Y-%m-%d %H:%M:%S.%f')
 

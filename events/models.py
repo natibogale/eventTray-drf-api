@@ -149,11 +149,10 @@ class Events(models.Model):
         choices=types, verbose_name="Event Type", max_length=250
     )
     venue = models.CharField(verbose_name="Venue", max_length=250)
-    eventCity = models.ForeignKey(
-        Cities,
+    eventCity = models.CharField(
         verbose_name="Event City",
-        on_delete=models.SET_DEFAULT,
-        default="Ethiopia",
+        default="Addis Ababa",
+        max_length=250
     )
     eventCountry = models.CharField(
         verbose_name="Event Country", default="Ethiopia", max_length=250

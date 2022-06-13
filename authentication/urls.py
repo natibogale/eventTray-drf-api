@@ -35,4 +35,5 @@ urlpatterns = [
     path("", home, name="home"),
     path("verify/otp", verifyOtp, name="verify-otp"),
     path('organizer/', include('organizer.urls')),
+    path('logout/', logoutView, name="logout"),
 ]

@@ -52,9 +52,9 @@ AUTH_USER_MODEL = "authentication.User"
 # AUTHENTICATION_BACKENDS = ('authentication.backends.MyBackend',)
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "authentication.jwt.JWTAuthentication",
-    ]
+    # "DEFAULT_AUTHENTICATION_CLASSES": [
+    #     "authentication.jwt.JWTAuthentication",
+    # ]
 }
 
 

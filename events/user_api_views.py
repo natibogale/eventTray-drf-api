@@ -14,6 +14,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.decorators import authentication_classes, permission_classes
 
 from rest_framework import status, permissions, response
+from rest_framework.permissions import AllowAny    
 
 from datetime import datetime
 from django.core.exceptions import ObjectDoesNotExist
@@ -49,10 +50,10 @@ import threading
 
 
 
-@authentication_classes([])
 @permission_classes([permissions.AllowAny])
 class EventsListView(GenericAPIView):
     serializer_class = EventSerializer
+    permission_classes = (AllowAny,)
 
     def get(self, request):
         try:
@@ -93,7 +94,6 @@ class EventsListView(GenericAPIView):
 
 
 
-@authentication_classes([])
 @permission_classes([permissions.AllowAny])
 class EventsSearchView(GenericAPIView):
     serializer_class = EventSerializer
