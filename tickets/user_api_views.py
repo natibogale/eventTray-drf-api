@@ -48,8 +48,7 @@ from json import JSONEncoder
 import threading
 
 
-@authentication_classes([JWTAuthentication])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny])
 
 class ListEventTicketView(GenericAPIView):
     serializer_class = eventTicketSerializer
