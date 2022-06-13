@@ -25,6 +25,7 @@ class Tickets(models.Model):
     quantity = models.PositiveIntegerField(verbose_name="Quantity")
     price = models.FloatField(verbose_name="Price per Unit", default=0,validators=[MinValueValidator(0.0)])
     ticketPerUser = models.PositiveIntegerField(verbose_name="Ticket Sell per User", blank=True, null=True)
+    image = models.ImageField(upload_to='merchs/', blank=True, null=True)
     soldTickets = models.PositiveIntegerField(verbose_name="Sold Tickets", default=0, blank=True, null=True)
     startSaleOn = models.DateField(auto_now=False, auto_now_add=False, verbose_name="Start Sale on" )
     endSaleOn = models.DateField(auto_now=False, auto_now_add=False, verbose_name="End Sale on" )
@@ -55,7 +56,6 @@ class TicketsBought (models.Model):
     is_payed = models.BooleanField(default=False)
     is_scanned = models.BooleanField(default=False)
     quantity = models.PositiveIntegerField(verbose_name="Quantity", default=0)
-    image = models.ImageField(upload_to='merchs/', blank=True, null=True)
     datePuchased = models.DateField(auto_now=False, auto_now_add=True, verbose_name="Date Purchased") 
     class Meta:
         verbose_name_plural = ("Tickets Bought")
