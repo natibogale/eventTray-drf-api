@@ -8,14 +8,6 @@ env = environ.Env()
 environ.Env.read_env()
 
 
-
-
-
-
-
-
-
-
 # Environment Variables
 HAHU_API_KEY = env("HAHU_API_KEY")
 
@@ -30,10 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 
-IMAGE_EXT = ['jpg','jpeg','png']
-
-
-
+IMAGE_EXT = ["jpg", "jpeg", "png"]
 
 
 # Quick-start development settings - unsuitable for production
@@ -45,7 +34,7 @@ SECRET_KEY = env("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["eventtray-api.heroku.com","192.168.0.7", "127.0.0.1", "*"]
+ALLOWED_HOSTS = ["eventtray-api.heroku.com", "192.168.0.7", "127.0.0.1", "*"]
 
 AUTH_USER_MODEL = "authentication.User"
 
@@ -81,13 +70,12 @@ INSTALLED_APPS = [
     "multiselectfield",
     "location_field.apps.DefaultConfig",
     "bootstrap4",
-    'corsheaders',
-
+    "corsheaders",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -96,7 +84,6 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-
 ]
 
 
@@ -104,12 +91,7 @@ MIDDLEWARE = [
 
 
 
-CORS_ALLOW_ALL_ORIGINS = True 
-
-
-
-
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 ROOT_URLCONF = "eventTray.urls"
@@ -129,7 +111,6 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "eventTray.context_processors.fixed",
                 "eventTray.context_processors.locations",
-
             ],
         },
     },
@@ -162,7 +143,6 @@ DATABASES = {
 # DATABASES['default'] = dj_database_url.config(conn_max_age=600, ssl_require=True)
 
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 
@@ -187,7 +167,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE =  'Africa/Nouakchott'
+TIME_ZONE = "Africa/Nouakchott"
 
 USE_I18N = True
 
@@ -199,20 +179,18 @@ USE_TZ = True
 
 
 BOOTSTRAP4 = {
-    'include_jquery': True,
+    "include_jquery": True,
 }
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
 
 # Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
@@ -260,7 +238,6 @@ CKEDITOR_CONFIGS = {
         # 'skin': 'office2013',
         "toolbar_Basic": [["Source", "-", "Bold", "Italic"]],
         "toolbar_YourCustomToolbarConfig": [
-           
             {
                 "name": "basicstyles",
                 "items": [
@@ -343,12 +320,11 @@ CKEDITOR_CONFIGS = {
 
 LOCATION_FIELD = {
     "provider.google.api": "https://www.maps.google.com/maps/api/js",
-    'provider.google.api_key': 'AIzaSyAyRlfLmlDM-CENBUNuMc_QA5-AWXA_6Vs',
+    "provider.google.api_key": "AIzaSyAyRlfLmlDM-CENBUNuMc_QA5-AWXA_6Vs",
     "provider.google.api_libraries": "",
     "provider.google.map.type": "ROADMAP",
-    'provider.openstreetmap.max_zoom': 18,
+    "provider.openstreetmap.max_zoom": 18,
     # 'search.provider': 'google',
-
 }
 
 
@@ -359,7 +335,6 @@ LOCATION_FIELD = {
 # }
 
 LOCATION_FIELD_PATH = STATIC_URL + "location_field"
-
 
 
 django_heroku.settings(locals())

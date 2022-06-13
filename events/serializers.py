@@ -2,6 +2,7 @@
 from django.db.models import fields
 from rest_framework import serializers
 from .models import *
+from authentication.models import *
 
 CATEGORIES = (
     ("Activities", "Activities"),
@@ -34,11 +35,16 @@ class eventImagesSerializer(serializers.ModelSerializer):
         model = Images
         fields ="__all__"
 
+
+
 class EventSerializer(serializers.ModelSerializer):
     eventCategories = serializers.ChoiceField(choices=CATEGORIES)
+    organizer = serializers.CharField()
     class Meta:
         model = Events
         fields = "__all__"
+
+
 
 
 

@@ -57,7 +57,6 @@ class OrganizerEventsView(GenericAPIView):
 
     def post(self, request):
         user = request.user
-
         serializer_class = EventSerializer(data=request.data)
         if serializer_class.is_valid():
             serializer_class.save()

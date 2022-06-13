@@ -4,8 +4,8 @@ from django.db import models
 
 class Messages(models.Model):
 
-    phoneNumber = models.CharField(max_length=15)   
-    message = models.CharField(max_length=200)
+    phoneNumber = models.CharField(verbose_name="Phone Number",max_length=15)   
+    message = models.TextField(verbose_name="Message")
     dateAdded = models.DateTimeField(auto_now_add=True)
     isSent = models.BooleanField(default=False)
     

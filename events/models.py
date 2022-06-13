@@ -143,7 +143,6 @@ class Events(models.Model):
         null=True,
     )
     image = models.CharField(verbose_name="Event Image", max_length=250,null=True,blank=True)
-
     status = models.CharField(verbose_name="Status", default="Upcoming", max_length=250)
     eventType = models.CharField(
         choices=types, verbose_name="Event Type", max_length=250
@@ -157,7 +156,8 @@ class Events(models.Model):
     eventCountry = models.CharField(
         verbose_name="Event Country", default="Ethiopia", max_length=250
     )
-    eventWallet = models.PositiveIntegerField(default=0)
+    soldTickets = models.IntegerField(verbose_name="Sold Tickets", default=0)
+    eventWallet = models.PositiveIntegerField(verbose_name="Event Wallet",default=0)
     date_added = models.DateTimeField(auto_now_add=True, verbose_name="Date Added")
     is_published = models.BooleanField(default=False)
     is_verified = models.BooleanField(default=False)

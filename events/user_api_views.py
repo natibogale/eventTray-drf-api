@@ -32,6 +32,10 @@ from authentication.permissions import IsEventOrganizer
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 
+from notifications.models import *
+from threading import Timer
+
+
 from .forms import *
 
 from django.shortcuts import (

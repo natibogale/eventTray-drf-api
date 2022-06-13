@@ -58,6 +58,7 @@ import threading
 @permission_classes([permissions.IsAuthenticated])
 class OrganizerEventTicketsView(GenericAPIView):
     serializer_class = eventTicketSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
     def post(self, request):
         user = request.user
