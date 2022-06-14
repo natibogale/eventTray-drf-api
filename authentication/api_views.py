@@ -345,7 +345,7 @@ class UserOrganizerListView(GenericAPIView):
     def get(self, request):
         user = request.user
         try:
-            organizers = User.objects.filter(is_active=True)
+            organizers = User.objects.filter(is_active=True, role="Organizer")
 
             serializer_class = OrganizerProfileSerializer(organizers, many=True)
             return Response(

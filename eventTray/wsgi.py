@@ -52,7 +52,7 @@ def sendSMS():
 
 
 
-    sendMessageTimer = Timer(3.0, sendSMS)
+    sendMessageTimer = Timer(30.0, sendSMS)
     sendMessageTimer.start()
 
 sendMessageTimer = Timer(2.0, sendSMS)
