@@ -8,7 +8,7 @@ from django.contrib.auth import *
 from collections import namedtuple
 import json
 from rest_framework.parsers import MultiPartParser, FormParser
-
+from authentication.serializers import *
 # from rest_framework.serializers import *
 # from rest_framework import serializers
 from rest_framework.decorators import authentication_classes, permission_classes
@@ -148,3 +148,43 @@ class BuyEventTicketView(GenericAPIView):
             return Response(
                 {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
             )
+
+
+
+@authentication_classes([JWTAuthentication])
+@permission_classes([permissions.IsAuthenticated])
+
+class ScanEventTicketView(GenericAPIView):
+    serializer_class = ScanTicketsSerializer
+    def get(self, request):
+        user = request.user
+        ticketId = Tickets.objects.get(id=request.GET.get('id'))
+        buyerId = User.objects.get(id=request.GET.get('buyerId'))
+        qrCode = request.GET.get('qrCode')
+        ticketsBought = TicketsBought.objects.filter(buyer=buyerId, ticket=ticketId, qrCode=qrCode)
+        buyer = User.objects.get(id=buyerId.id)
+        serializer_class = UserProfileSerializer(buyer)
+        buys = json.dumps(serializer_class.data)
+
+        return Response(
+            {"status": "success", "message":"confirmed","profile":serializer_class.data }, status=status.HTTP_202_ACCEPTED
+        )
+    def patch(self, request):
+        user = request.user
+        buyerId= request.data['buyerId']
+        id = request.data['id']
+        qrCode = request.data['qrCode']
+        try:
+            print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',ticketsBought)
+
+            ticketsBought = TicketsBought.objects.get(buyer=buyerId, id=id,is_scanned=False, qrCode=qrCode)
+            ticketsBought.is_scanned = True
+            ticketsBought.save()
+            return Response(
+                {"status": "success", "message":"Scanned Ticket!" }, status=status.HTTP_202_ACCEPTED
+            )
+        except:
+            return Response(
+            {"status": "error", "message":"Ticket Not Found!" }, status=status.HTTP_404_NOT_FOUND       )
+        # serializer_class = ScanTicketsSerializer(data=request.data)
+ 

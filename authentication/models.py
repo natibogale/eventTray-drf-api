@@ -249,12 +249,12 @@ class Organizer(models.Model):
     totalEvents = models.PositiveIntegerField(
         verbose_name="Total Events",  default=0, blank=True, null=True
     )
-    sales = models.CharField(
-        verbose_name="Total Sales", blank=True, null=True, default=0, max_length=150
+    sales = models.PositiveIntegerField(
+        verbose_name="Total Sales", blank=True, null=True, default=0
     )
   
-    wallet = models.CharField(
-        verbose_name="Wallet", blank=True, null=True, default=0, max_length=150
+    wallet = models.PositiveIntegerField(
+        verbose_name="Wallet", blank=True, null=True, default=0
     )
 
     class Meta:

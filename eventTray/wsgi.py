@@ -98,8 +98,26 @@ def confirmPayment():
 
                         if amount >= totalPrice: 
                             for ticket in boughtTickets:
-                                ticket.is_payed = True
-                                ticket.save()
+                                try:
+                                    eventId = ticket.event
+                                    event = Events.objects.get(id=eventId)
+                                    event.soldTickets += ticket.quantity
+                                    event.eventWallet += totalPrice
+                                    event.save()    
+                                    ownerId = event.organizer
+                                    owner = User.objects.get(id=ownerId)
+                                    owner.wallet += totalPrice
+                                    owner.sales += totalPrice
+                                    owner.save()
+                                except:
+                                    pass
+                            createMessage = Message.objects.create(
+                                phoneNumber=ticket.phoneNumber,
+                                message="Your ticket for "+event.eventName+" has been confirmed. Thank you for buying tickets with us.\n\n EventTray"
+                            )
+                         
+                            ticket.is_payed = True
+                            ticket.save()
                     except:
                         pass
 

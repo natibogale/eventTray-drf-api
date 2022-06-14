@@ -21,3 +21,10 @@ class BuyEventTicketsSerializer(serializers.ModelSerializer):
         list_serializer_class = BuyTicketsListSerializer
         model = TicketsBought
         fields = "__all__"
+
+
+class ScanTicketsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = TicketsBought
+        fields = "__all__"

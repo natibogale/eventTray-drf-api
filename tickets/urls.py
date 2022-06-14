@@ -22,6 +22,8 @@ urlpatterns = [
 
     # Api URL paths for ticket app
     path("", OrganizerEventTicketsView.as_view(), name="create-ticket-api"),
+    path("scan/", ScanEventTicketView.as_view(), name="scan-tickets-api"),
+
 ]
 
 
