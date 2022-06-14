@@ -20,6 +20,8 @@ urlpatterns = [
      path('events-list/', eventsListView,name="events-list"),
      path('event-details/<id>', eventsDetailView,name="event-details"),
      path('event-preview/<id>', eventPreview,name="event-preview"),
+     path('event-publish/<id>', eventPublish,name="event-publish"),
+     path('event-cancel/<id>', cancelEvent,name="event-cancel"),
 
     #  path('add-events-images/<str>', views.addImages,name="add-event-images"),
 

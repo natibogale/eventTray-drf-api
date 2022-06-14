@@ -191,14 +191,14 @@ def home(request):
                     + "&priority=10"
                 )
 
-                # r = requests.get(url)
+                r = requests.get(url)
 
-                # if r.status_code == 200:
-                if 1:
+                if r.status_code == 200:
+                # if 1:
 
                     messages.success(
                         request,
-                        f"An OTP has been sent to your phone" + url,
+                        f"An OTP has been sent to your phone" ,
                         extra_tags="success",
                     )
                     global _tree_instance

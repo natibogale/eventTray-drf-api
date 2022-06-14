@@ -89,6 +89,28 @@ def eventsListView(request):
 
 
 
+@login_required
+def eventPublish(request,id):
+    obj = get_object_or_404(Events, id=id)
+    obj.is_published = True
+    obj.save()
+    messages.success(request, f'Event has been published!', extra_tags="success")
+    return eventPreview(request,id)
+
+    return render(request, 'events/events_list.html',context)
+
+
+
+@login_required
+def cancelEvent(request,id):
+    obj = get_object_or_404(Events, id=id)
+    if obj.soldTickets > 0:
+        messages.error(request, "You cannot cancel an event with sold tickets!",extra_tags="danger")
+        return eventPreview(request,id)
+    else:
+        obj.delete()
+        messages.success(request, f'Event has been deleted!', extra_tags="success")
+        return redirect('events-list')
 
 
 

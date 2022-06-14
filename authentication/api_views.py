@@ -219,15 +219,15 @@ class SendOtp(GenericAPIView):
             + messageOTP
             + "&priority=10"
         )
-        # r = requests.get(url)
+        r = requests.get(url)
 
-        # if r.status_code == 200:
-        if 1:
+        if r.status_code == 200:
+        # if 1:
             return Response(
                 {
                     "status": "success",
                     "message": "OTP has been sent to your phone.",
-                    "url": url,
+                    # "url": url,
                 },
                 status=status.HTTP_201_CREATED,
             )  # Just for demonstration
