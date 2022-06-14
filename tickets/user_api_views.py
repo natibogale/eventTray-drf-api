@@ -148,19 +148,37 @@ class BuyEventTicketView(GenericAPIView):
             return Response(
                 {"status": "error", "message": serializer_class.errors}, status=status.HTTP_400_BAD_REQUEST
             )
+    def get(self, request):
+        user = request.user
+        try:
+            user = request.user
+            ticket = TicketsBought.objects.filter( buyer=29, is_payed=True)
+            print('sssssssssssssssssssssssssssssssssssssssssssssssssssss', user.id)
+            serializer_class = MyTicketsSerializer(ticket, many=True)
+
+            return Response(
+                {"status": "success","ticket":serializer_class.data}, status=status.HTTP_200_OK
+            )
+
+        except Exception as e:
+            return Response(
+                {"status": "success", "message": "No Tickets Available Yet!"}, status=status.HTTP_404_NOT_FOUND
+            )
 
 
 
-@authentication_classes([JWTAuthentication])
-@permission_classes([permissions.IsAuthenticated])
+@permission_classes([permissions.AllowAny()])
 
 class ScanEventTicketView(GenericAPIView):
     serializer_class = ScanTicketsSerializer
     def get(self, request):
         user = request.user
-        ticketId = Tickets.objects.get(id=request.GET.get('id'))
-        buyerId = User.objects.get(id=request.GET.get('buyerId'))
+        # ticketId = Tickets.objects.get(id=request.GET.get('id'))
+        # buyerId = User.objects.get(id=request.GET.get('buyerId'))
         qrCode = request.GET.get('qrCode')
+        another = TicketsBought.objects.filter(qrCode=qrCode).first()
+        ticketId = another.ticket
+        buyerId = another.buyer
         ticketsBought = TicketsBought.objects.filter(buyer=buyerId, ticket=ticketId, qrCode=qrCode)
         buyer = User.objects.get(id=buyerId.id)
         serializer_class = UserProfileSerializer(buyer)
@@ -171,8 +189,7 @@ class ScanEventTicketView(GenericAPIView):
         )
     def patch(self, request):
         user = request.user
-        buyerId= request.data['buyerId']
-        id = request.data['id']
+  
         qrCode = request.data['qrCode']
 
         try:

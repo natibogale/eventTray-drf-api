@@ -28,3 +28,9 @@ class ScanTicketsSerializer(serializers.ModelSerializer):
     class Meta:
         model = TicketsBought
         fields = "__all__"
+
+
+class MyTicketsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = TicketsBought
+        fields = "__all__"
