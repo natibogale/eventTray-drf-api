@@ -64,6 +64,9 @@ class EventsListView(GenericAPIView):
             user = request.user
             id=request.GET.get("id")
             events = Events.objects.get(id=id)
+            images = Images.objects.filter(event=id).first()
+            events.image=images.image
+            events.save()
             serializer_class = EventSerializer(events)
             return Response(
                 {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
@@ -75,6 +78,10 @@ class EventsListView(GenericAPIView):
                 user = request.user
                 searchBy=request.GET.get("searchBy")
                 events = Events.objects.filter((Q(is_published=True) & Q(is_cancelled = False)) & Q(eventDescription__icontains=searchBy) | Q(eventCategories__icontains=searchBy)| Q(venue__icontains=searchBy) )
+                for ev in events:
+                    images = Images.objects.filter(event=ev.id).first()
+                    ev.image=images.image
+                    ev.save()
                 serializer_class = EventSerializer(events, many=True)
                 return Response(
                     {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
@@ -83,6 +90,10 @@ class EventsListView(GenericAPIView):
             except Exception as e:
                 user = request.user
                 events = Events.objects.filter(is_published=True, is_cancelled = False)
+                for ev in events:
+                    images = Images.objects.filter(event=ev.id).first()
+                    ev.image=images.image
+                    ev.save()
                 serializer_class = EventSerializer(events, many=True)
                 return Response(
                     {"status": "success", "events":serializer_class.data}, status=status.HTTP_202_ACCEPTED
