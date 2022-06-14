@@ -34,10 +34,13 @@ def locations(request):
     try:
         cities = Cities.objects.all()
         venues = Venues.objects.all()
+        events = Events.objects.filter(organizer=request.user.id).order_by('-date_added')
 
         context = {
             "cities": cities,
             "venues": venues,
+            "events":events
+
         }
         return context
 

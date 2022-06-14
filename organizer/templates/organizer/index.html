@@ -74,26 +74,8 @@
 						</div> -->
 					</div>
 					<div class="row">
-						<div class="col-sm-6 col-md-3">
-							<div class="card card-stats card-round">
-								<div class="card-body ">
-									<div class="row align-items-center">
-										<div class="col-icon">
-											<div class="icon-big text-center icon-primary bubble-shadow-small">
-												<i class="fas fa-users"></i>
-											</div>
-										</div>
-										<div class="col col-stats ml-3 ml-sm-0">
-											<div class="numbers">
-												<p class="card-category">Today's Visitors</p>
-												<h4 class="card-title">{{ organizer.dailyVisitors }}</h4>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-sm-6 col-md-3">
+				
+						<div class="col-sm-6 col-md-4">
 							<div class="card card-stats card-round">
 								<div class="card-body">
 									<div class="row align-items-center">
@@ -112,7 +94,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-3">
+						<div class="col-sm-6 col-md-4">
 							<div class="card card-stats card-round">
 								<div class="card-body">
 									<div class="row align-items-center">
@@ -124,14 +106,14 @@
 										<div class="col col-stats ml-3 ml-sm-0">
 											<div class="numbers">
 												<p class="card-category"></p>Events Organized</p>
-												<h4 class="card-title">{{ organizer.events}}</h4>
+												<h4 class="card-title">{{ organizer.totalEvents}}</h4>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
-						<div class="col-sm-6 col-md-3">
+						<div class="col-sm-6 col-md-4">
 							<div class="card card-stats card-round">
 								<div class="card-body">
 									<div class="row align-items-center">
@@ -152,32 +134,65 @@
 						</div>
 					</div>
 					<div class="row">
+					
 						<div class="col-md-8">
 							<div class="card">
 								<div class="card-header">
-									<div class="card-head-row">
-										<div class="card-title">User Statistics</div>
-										<div class="card-tools">
-											<a href="#" class="btn btn-info btn-border btn-round btn-sm mr-2">
-												<span class="btn-label">
-													<i class="fa fa-pencil"></i>
-												</span>
-												Export
-											</a>
-											<a href="#" class="btn btn-info btn-border btn-round btn-sm">
-												<span class="btn-label">
-													<i class="fa fa-print"></i>
-												</span>
-												Print
-											</a>
-										</div>
-									</div>
+									<h4 class="card-title">My Events</h4>
 								</div>
 								<div class="card-body">
-									<div class="chart-container" style="min-height: 375px">
-										<canvas id="statisticsChart"></canvas>
+									<div class="table-responsive">
+										<table id="multi-filter-select" class="display table table-striped table-hover" >
+											<thead>
+												<tr>
+													<th>Event</th>
+													<th>Payment</th>
+													<th>Event Type</th>
+													<th>Published</th>
+													<th>Status</th>
+												</tr>
+											</thead>
+											<tfoot>
+												<tr>
+													<th>Event</th>
+													<th>Payment</th>
+													<th>Event Type</th>
+													<th>Published</th>
+													<th>Status</th>
+												</tr>
+											</tfoot>
+											<tbody>
+											
+											{% if events %}
+											{% for event in events %}
+												<tr>
+													<td><a href="{% url 'event-preview' event.id %}"> {{ event.eventName }}</a></td>
+													<td>{{event.payment}}</td>
+													<td>{{event.eventType}}</td>
+													{% if event.is_published %}
+													<td class=" btn-info btn-success">Published</td>
+													{% else %}
+													<td class=" btn-info btn-warning" >Not Published</td>
+
+													{% endif %}
+													{% if event.status == 'Upcoming' %}
+													<td class=" btn-info btn-status">   {{event.status}}</td>
+
+													{% elif event.status == 'Ended' %}
+													<td class=" btn-info btn-danger">   {{event. }}</td>
+
+													{% elif event.status == 'Happening' %}
+													<td class=" btn-info btn-warning">   {{event.status}}</td>
+													{% endif %}
+												</tr>
+												{% endfor %}
+												{% endif %}
+
+
+
+											</tbody>
+										</table>
 									</div>
-									<div id="myChartLegend"></div>
 								</div>
 							</div>
 						</div>
