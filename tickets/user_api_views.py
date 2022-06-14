@@ -174,17 +174,22 @@ class ScanEventTicketView(GenericAPIView):
         buyerId= request.data['buyerId']
         id = request.data['id']
         qrCode = request.data['qrCode']
-        try:
-            print('dddddddddddddddddddddddddddddddddddddddddddddddddddddddddd',ticketsBought)
 
-            ticketsBought = TicketsBought.objects.get(buyer=buyerId, id=id,is_scanned=False, qrCode=qrCode)
+        try:
+
+            ticketsBought = TicketsBought.objects.filter( qrCode=qrCode, is_scanned=False).first()
+            print('dddddddddddddddddddddddddddddd',ticketsBought)
             ticketsBought.is_scanned = True
             ticketsBought.save()
+            
             return Response(
                 {"status": "success", "message":"Scanned Ticket!" }, status=status.HTTP_202_ACCEPTED
             )
+
         except:
-            return Response(
+            pass
+        
+        return Response(
             {"status": "error", "message":"Ticket Not Found!" }, status=status.HTTP_404_NOT_FOUND       )
         # serializer_class = ScanTicketsSerializer(data=request.data)
  
