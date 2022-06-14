@@ -36,3 +36,7 @@ def createTicketView(request):
     return render(request, 'tickets/create_ticket.html',context)
 
      
+
+
+def TicketListVie(request):
+    pass

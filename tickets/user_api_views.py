@@ -167,7 +167,7 @@ class BuyEventTicketView(GenericAPIView):
 
 
 
-@permission_classes([permissions.AllowAny()])
+@permission_classes([permissions.AllowAny])
 
 class ScanEventTicketView(GenericAPIView):
     serializer_class = ScanTicketsSerializer
