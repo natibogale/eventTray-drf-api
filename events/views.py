@@ -93,6 +93,12 @@ def eventsListView(request):
 def eventPublish(request,id):
     obj = get_object_or_404(Events, id=id)
     obj.is_published = True
+    user = User.objects.filter(id=obj.organizer)
+    if user.totalEvents:
+        user.totalEvents += 1
+    else:
+        user.totalEvents = 1
+        
     obj.save()
     messages.success(request, f'Event has been published!', extra_tags="success")
     return eventPreview(request,id)

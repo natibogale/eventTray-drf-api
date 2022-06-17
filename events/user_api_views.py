@@ -65,7 +65,7 @@ class EventsListView(GenericAPIView):
             id=request.GET.get("id")
             events = Events.objects.get(id=id)
             images = Images.objects.filter(event=id).first()
-            events.image=images.image
+            events.image="/media/"+str(images.image)
             events.save()
             serializer_class = EventSerializer(events)
             return Response(
@@ -80,7 +80,7 @@ class EventsListView(GenericAPIView):
                 events = Events.objects.filter((Q(is_published=True) & Q(is_cancelled = False)) & Q(eventDescription__icontains=searchBy) | Q(eventCategories__icontains=searchBy)| Q(venue__icontains=searchBy) )
                 for ev in events:
                     images = Images.objects.filter(event=ev.id).first()
-                    ev.image=images.image
+                    ev.image="/media/"+str(images.image)
                     ev.save()
                 serializer_class = EventSerializer(events, many=True)
                 return Response(
@@ -92,7 +92,7 @@ class EventsListView(GenericAPIView):
                 events = Events.objects.filter(is_published=True, is_cancelled = False)
                 for ev in events:
                     images = Images.objects.filter(event=ev.id).first()
-                    ev.image=images.image
+                    ev.image="/media/"+str(images.image)
                     ev.save()
                 serializer_class = EventSerializer(events, many=True)
                 return Response(

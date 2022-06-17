@@ -7,8 +7,8 @@ from .user_api_views import *
 
 urlpatterns = [
     path("create-ticket/", createTicketView, name="create-ticket"),
-    
-
+    path("list-tickets/",TicketListView, name="list-tickets"),
+    path("ticket-details/<id>", TicketUpdateView, name="ticket-details"),
 
 
 

@@ -18,7 +18,10 @@ def createTicketView(request):
         form=createEventTicketForm(request.user,request.POST)
         if form.is_valid():
             owner = form.save(commit=False)
+            eventId = request.POST["event"]
+            event = Events.objects.get(id=eventId)
             owner.ticketOwner = request.user
+            owner.eventName = event.eventName
             owner.save()
             messages.success(request, f'New Ticket has been added to your event', extra_tags="success")
             return redirect('create-ticket')
@@ -38,5 +41,35 @@ def createTicketView(request):
      
 
 
-def TicketListVie(request):
-    pass
+def TicketListView(request):
+    tickets = Tickets.objects.filter(ticketOwner=request.user.id)
+    context={
+        "tickets":tickets,
+    }
+    return render(request, "tickets/tickets_list.html",context)
+    
+def TicketUpdateView(request, id):
+    req = Tickets.objects.filter(id=id).first()
+    if request.method == "POST":
+        form=createEventTicketForm(request.user,request.POST or None, instance=req)
+        if form.is_valid():
+            owner = form.save(commit=False)
+            eventId = request.POST["event"]
+            event = Events.objects.get(id=eventId)
+            owner.ticketOwner = request.user
+            owner.eventName = event.eventName
+            owner.save()
+            messages.success(request, f'Ticket has been updated.', extra_tags="success")
+            return redirect('ticket-details' ,id)
+        
+        context={
+            "form":form,
+        }
+        messages.error(request, f'Error occured while updating the ticket!', extra_tags="danger")
+        return render(request, 'tickets/tickets_detail.html',context)
+
+    form = createEventTicketForm(request.user, instance=req)
+    context={
+        "form":form,
+    }
+    return render(request, 'tickets/tickets_detail.html',context)

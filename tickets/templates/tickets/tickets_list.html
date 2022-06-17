@@ -56,7 +56,7 @@
 			<div class="content">
 				<div class="page-inner">
 					<div class="page-header">
-						<h4 class="page-title">Tickets For</h4>
+						<!-- <h4 class="page-title">Tickets</h4> -->
 						<!-- <div class="btn-group btn-group-page-header ml-auto">
 							<button type="button"
 								class="btn btn-light btn-round btn-page-header-dropdown dropdown-toggle"
@@ -79,52 +79,39 @@
 							<div class="col-md-12">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h4 class="card-title">My Events</h4>
+                                        <h4 class="card-title">My Tickets</h4>
                                     </div>
                                     <div class="card-body">
                                         <div class="table-responsive">
                                             <table id="multi-filter-select" class="display table table-striped table-hover" >
                                                 <thead>
                                                     <tr>
-                                                        <th>Event</th>
-                                                        <th>Payment</th>
-                                                        <th>Event Type</th>
-                                                        <th>Published</th>
-                                                        <th>Status</th>
+                                                        <th>Ticket Name</th>
+                                                        <th>Event Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                        <th>Sold Tickets</th>
                                                     </tr>
                                                 </thead>
                                                 <tfoot>
                                                     <tr>
-                                                        <th>Event</th>
-                                                        <th>Payment</th>
-                                                        <th>Event Type</th>
-                                                        <th>Published</th>
-                                                        <th>Status</th>
+                                                        <th>Ticket Name</th>
+                                                        <th>Event Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Price</th>
+                                                        <th>Sold Tickets</th>
                                                     </tr>
                                                 </tfoot>
                                                 <tbody>
                                                 
-                                                {% if events %}
-                                                {% for event in events %}
+                                                {% if tickets %}
+                                                {% for ticket in tickets %}
                                                     <tr>
-                                                        <td><a href="{% url 'event-preview' event.id %}"> {{ event.eventName }}</a></td>
-                                                        <td>{{event.payment}}</td>
-                                                        <td>{{event.eventType}}</td>
-                                                        {% if event.is_published %}
-                                                        <td class=" btn-info btn-success">Published</td>
-                                                        {% else %}
-                                                        <td class=" btn-info btn-warning" >Not Published</td>
-
-                                                        {% endif %}
-                                                        {% if event.status == 'Upcoming' %}
-                                                        <td class=" btn-info btn-status">   {{event.status}}</td>
-
-                                                        {% elif event.status == 'Ended' %}
-                                                        <td class=" btn-info btn-danger">   {{event. }}</td>
-
-                                                        {% elif event.status == 'Happening' %}
-                                                        <td class=" btn-info btn-warning">   {{event.status}}</td>
-                                                        {% endif %}
+                                                        <td><a href="{% url 'ticket-details' ticket.id %}"> {{ ticket.ticketName }}</a></td>
+                                                        <td>{{ticket.eventName}}</td>
+                                                        <td>{{ticket.quantity}}</td>
+                                                        <td>{{ticket.price}}</td>
+                                                        <td>{{ticket.soldTickets}}</td>
                                                     </tr>
                                                     {% endfor %}
                                                     {% endif %}

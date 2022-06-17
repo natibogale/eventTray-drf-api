@@ -61,7 +61,7 @@ class ListEventTicketView(GenericAPIView):
         user = request.user
         try:
             eventId = request.GET.get('id')
-            ticket = Tickets.objects.filter(event=eventId)
+            ticket = Tickets.objects.get(event=eventId)
             for tk in ticket:
                 evenet = Events.objects.get(id=tk.event.id)
                 tk.eventName = evenet.eventName
@@ -71,11 +71,24 @@ class ListEventTicketView(GenericAPIView):
             return Response(
                 {"status": "success","ticket":serializer_class.data}, status=status.HTTP_200_OK
             )
+        except Exception as e:         
+            try:
+                ticket = Tickets.objects.all()
+                for tk in ticket:
+                    evenet = Events.objects.get(id=tk.event.id)
+                    tk.eventName = evenet.eventName
+                    tk.save()
+                serializer_class = eventTicketSerializer(ticket, many=True)
 
-        except Exception as e:
-            return Response(
-                {"status": "success", "message": "No Tickets Available Yet!"}, status=status.HTTP_404_NOT_FOUND
-            )
+                return Response(
+                    {"status": "success","ticket":serializer_class.data}, status=status.HTTP_200_OK
+                )
+            except Exception as e:
+                return Response(
+                    {"status": "success", "message": "No Tickets Available Yet!"}, status=status.HTTP_404_NOT_FOUND
+                ) 
+
+
 
 
 
@@ -101,8 +114,8 @@ def cancelUnpaidOrders(args, **kwargs):
         message=message,
     )  
 
-@authentication_classes([JWTAuthentication])
-@permission_classes([permissions.IsAuthenticated])
+# @authentication_classes([JWTAuthentication])
+@permission_classes([permissions.AllowAny])
 
 class BuyEventTicketView(GenericAPIView):
     serializer_class = BuyEventTicketsSerializer
@@ -111,7 +124,7 @@ class BuyEventTicketView(GenericAPIView):
     def post(self, request):
         user = request.user
         serializer_class = BuyEventTicketsSerializer(data=request.data, many=True)
-
+        print('ssssssssssss',request.data)
         phoneNumber  = request.data[0]['phoneNumber']
         orderNo = request.data[0]['orderNo']
         ticketId = {}
@@ -129,7 +142,10 @@ class BuyEventTicketView(GenericAPIView):
             serializer_class.save()
             for key, value in ticketId.items():
                 ticket = Tickets.objects.get(id=key)
-                ticket.soldTickets = int(ticket.soldTickets) + int(value)
+                print('vvvvvvvvvvvvvvvvvvvvvvvvvv',value)
+                if ticket.soldTickets: 
+                    ticket.soldTickets = int(float(ticket.soldTickets)) + int(float(value))
+                ticket.soldTickets = int(float(value))
                 ticket.save()
 
 
@@ -140,7 +156,7 @@ class BuyEventTicketView(GenericAPIView):
                 message=message,
             )    
 
-            t = Timer(300.0, cancelUnpaidOrders, (orderNo,),ticketId)
+            t = Timer(600.0, cancelUnpaidOrders, (orderNo,),ticketId)
             t.start()
 
             return Response({"status": "success", "message":"Order Placed Successfully!","ticket":serializer_class.data}, status=status.HTTP_201_CREATED)
@@ -151,8 +167,8 @@ class BuyEventTicketView(GenericAPIView):
     def get(self, request):
         user = request.user
         try:
-            user = request.user
-            ticket = TicketsBought.objects.filter( buyer=29, is_payed=True)
+            id  = request.GET.get('id')
+            ticket = TicketsBought.objects.filter( buyer=id, is_payed=True)
             print('sssssssssssssssssssssssssssssssssssssssssssssssssssss', user.id)
             serializer_class = MyTicketsSerializer(ticket, many=True)
 

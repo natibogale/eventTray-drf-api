@@ -21,7 +21,8 @@ from threading import Timer
 from django.conf import settings
 import requests
 from tickets.models import *
-
+from events.models import *
+from authentication.models import *
 
 
 
@@ -30,6 +31,7 @@ from notifications.models import *
 def sendSMS():
     # der = Messages.objects.create(phoneNumber="+919012345678", message=" to dssdfsdf")
     ms = Messages.objects.filter(isSent=False)
+    print(ms)
     for m in ms:
         phoneNumber = m.phoneNumber
         phoneNumber = list(phoneNumber)
@@ -66,58 +68,117 @@ sendMessageTimer.start()
 def confirmPayment():
     url = ("https://sms.hahucloud.com/api/get/received?key="+settings.HAHU_API_KEY)
     fetch = requests.get(url)
-    fetchedMessages = fetch.json()
+    fetchedMessages = ""
+    if fetch.status_code == 200:
+        fetchedMessages = fetch.json()
     i =0
     for message in fetchedMessages:
-        phoneNumber = fetchedMessages['data'][i]['phone']
+        phoneNumber = fetchedMessages['data'][0]['phone']
+
         if phoneNumber == '127':
-            message = fetchedMessages['data'][i]['message']
+            message = fetchedMessages['data'][0]['message']
             if 'received' in message:
                 ETBindex = message.find("ETB")
                 fromIndex = message.find("from")
+                amount=0
                 amount = message[ETBindex+4:fromIndex]
+                amount = int(float(amount))
+
+
                 bracketIndex = message.find("(")
                 sender = message[bracketIndex+5:bracketIndex+14]
                 #add 0 to the first of the sender string
                 if sender[0] != '0':
                     sender = '0'+sender
+
                 #fetch the most recently saved message from the Messages model
-                recentSentMessage = Messages.objects.filter(phoneNumber=sender).order_by('-id')[0]
-                message = recentSentMessage.message
+
+                recentSentMessage = Messages.objects.filter(phoneNumber=sender).order_by('-id').first()
+                if recentSentMessage:
+                    message = recentSentMessage.message
+
                 orderNo = message[message.find("is")+3:message.find(". Your tickets")]
+                boughtTickets = TicketsBought.objects.filter(orderNo=orderNo,is_payed=False,is_scanned=False).first()
+
+                
                 if orderNo:
-
+                    
                     boughtTickets = TicketsBought.objects.filter(orderNo=orderNo,is_payed=False,is_scanned=False)
+                    uniqueTickets={}
+                    l=[]
+                    for bought in boughtTickets:
+                        name = bought.ticket.id
+                        allTickets = Tickets.objects.filter(id = name)
+                        for each in allTickets:
+                            if each.soldTickets:
+                                each.soldTickets += 1
+                            else:
+                                each.soldTickets =1
+                            each.save()
+
+
+
+
+
                     try:
-                        price = int(boughtTickets[0].price)
-                        quantity = int(boughtTickets[0].quantity)
-                        totalPrice = price*quantity
-                        amount = int(float(amount))
+                        totalPrice=0
 
-                        totalPrice = int(totalPrice)
+                        for bought in boughtTickets:
 
-                        if amount >= totalPrice: 
+                            totalPrice += int(float(bought.price))
+
+
+
+                        price = int(float(boughtTickets[0].price))
+
+                        quantity = int(float(boughtTickets[0].quantity))
+
+                        # totalPrice = price * quantity
+
+                        print('dddddddddddddddddddddddddddddddddddddddddd',totalPrice)
+                        # if totalPrice:
+                        #     totalPrice = totalPrice - 20
+
+                        if amount >= totalPrice:
+
                             for ticket in boughtTickets:
+
                                 try:
                                     eventId = ticket.event
-                                    event = Events.objects.get(id=eventId)
-                                    event.soldTickets += ticket.quantity
-                                    event.eventWallet += totalPrice
-                                    event.save()    
+
+                                    event = Events.objects.get(id=eventId.id)
+                                    # print('wwwwwwwwwwwwwwwwwwwwwwwwwwwwww',event)
+                                    event.soldTickets = int(float(event.soldTickets)) + int(float(ticket.quantity))
+                                    event.eventWallet = int(float(event.eventWallet)) + int(float(totalPrice))
                                     ownerId = event.organizer
-                                    owner = User.objects.get(id=ownerId)
-                                    owner.wallet += totalPrice
-                                    owner.sales += totalPrice
-                                    owner.save()
+                                    event.save()
+
+                                    # owner = User.objects.get(id=ownerId.id)
+
+                                    # print('ssssssssssssssssssss',owner.wallet)
+                                    # if not owner.wallet:
+                                    #     owner.wallet = 0
+                                    # if not owner.sales:
+                                    #     owner.sales = 0
+                                    # owner.wallet = int(float(totalPrice))
+                                    # owner.sales = int(float(totalPrice))
+                                    # owner.save()
+                                    # print('qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq')
+
+
                                 except:
                                     pass
-                            createMessage = Message.objects.create(
+                            print('gggggggggggggggggggggggggggggggggggg',ticket.phoneNumber)
+                            createMessage = Messages.objects.create(
                                 phoneNumber=ticket.phoneNumber,
                                 message="Your ticket for "+event.eventName+" has been confirmed. Thank you for buying tickets with us.\n\n EventTray"
                             )
-                         
-                            ticket.is_payed = True
-                            ticket.save()
+                                
+                            yes = TicketsBought.objects.filter(phoneNumber=ticket.phoneNumber)
+
+                            for y in yes:
+                                y.is_payed = True
+                                y.save()
                     except:
                         pass
 
@@ -128,7 +189,7 @@ def confirmPayment():
         
         
     
-    fetchMessagesTimer = Timer(30.0, confirmPayment)
+    fetchMessagesTimer = Timer(5.0, confirmPayment)
     fetchMessagesTimer.start()
 
 fetchMessagesTimer = Timer(2.0, confirmPayment)
